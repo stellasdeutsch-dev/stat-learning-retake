@@ -1,0 +1,1957 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stat Learning Retake</title>
+<meta name="description" content="Step-by-step theory for the Statistical Learning midterm and final retake, built from the 2026 exams.">
+<style>
+/* Layout: Apple-style study guide. Translucent sticky nav, centered hero with a 3-hour plan, then a sticky chapter rail + one reading column. */
+:root{
+  --bg:#f5f5f7; --surface:#ffffff; --surface-2:#f9f9fb; --fg:#1d1d1f; --fg-2:#515154; --fg-3:#86868b; --line:rgba(0,0,0,.09);
+  --accent:#0071e3; --accent-fg:#ffffff;
+  --red:#d70015; --green:#1b7f37; --purple:#8944ab; --orange:#b64400; --teal:#00707c;
+  --p-basics:#8e8e93; --p-mid:#0071e3; --p-final:#5e5ce6; --p-prac:#1b8a3a; --on-seg:#ffffff;
+  --nav-bg:rgba(245,245,247,.74); --menu-bg:rgba(255,255,255,.86);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.05);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --r-lg:22px; --r-md:14px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#141416; --fg:#f5f5f7; --fg-2:#c7c7cc; --fg-3:#8e8e93; --line:rgba(255,255,255,.13);
+  --accent:#2997ff; --accent-fg:#ffffff;
+  --red:#ff6961; --green:#30d158; --purple:#c77dff; --orange:#ff9f0a; --teal:#5ad8e6;
+  --p-basics:#8e8e93; --p-mid:#2997ff; --p-final:#7d7aff; --p-prac:#30d158; --on-seg:#000000;
+  --nav-bg:rgba(0,0,0,.66); --menu-bg:rgba(28,28,30,.88);
+  --shadow:0 0 0 1px rgba(255,255,255,.06);
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#141416; --fg:#f5f5f7; --fg-2:#c7c7cc; --fg-3:#8e8e93; --line:rgba(255,255,255,.13);
+  --accent:#2997ff; --accent-fg:#ffffff;
+  --red:#ff6961; --green:#30d158; --purple:#c77dff; --orange:#ff9f0a; --teal:#5ad8e6;
+  --p-basics:#8e8e93; --p-mid:#2997ff; --p-final:#7d7aff; --p-prac:#30d158; --on-seg:#000000;
+  --nav-bg:rgba(0,0,0,.66); --menu-bg:rgba(28,28,30,.88);
+  --shadow:0 0 0 1px rgba(255,255,255,.06);
+  color-scheme:dark; }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.55 var(--font);letter-spacing:-.005em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px;border-radius:8px}
+b,strong{font-weight:600}
+code,.mono{font-family:var(--mono);font-size:.88em}
+mjx-container[jax="SVG"][display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;margin:.7em 0!important;padding-block:2px}
+mjx-container[jax="SVG"]{max-width:100%}
+mjx-container.mjx-wide{display:block!important;overflow-x:auto;overflow-y:hidden;margin:.35em 0;padding-block:2px;max-width:100%}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--nav-bg);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1200px;margin:0 auto;padding-inline:20px;height:52px;display:flex;align-items:center;gap:12px;position:relative}
+.brand{font:600 17px/1 var(--font-display);color:var(--fg);letter-spacing:-.015em;white-space:nowrap}
+.brand:hover{text-decoration:none}
+.brand span{color:var(--fg-3);font-weight:500}
+.nav-links{display:flex;gap:2px;margin-inline:auto}
+.nav-links a{font-size:13px;color:var(--fg-2);padding:7px 11px;border-radius:980px;white-space:nowrap}
+.nav-links a:hover{color:var(--fg);text-decoration:none;background:var(--line)}
+.prog{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ring{width:22px;height:22px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:3}
+.ring .rb{stroke:var(--line)}
+.ring .rf{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.2,.8,.2,1)}
+.menu-btn{appearance:none;border:0;background:var(--line);color:var(--fg);font:500 13px/1 var(--font);padding:8px 12px;border-radius:980px;cursor:pointer;transition:transform .1s ease-out}
+.menu-btn:active{transform:scale(.96)}
+.menu{position:absolute;right:20px;top:58px;width:min(380px,calc(100vw - 32px));max-height:min(72vh,640px);overflow:auto;background:var(--menu-bg);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.18),0 0 0 1px var(--line);padding:10px;transform-origin:top right;animation:pop .28s cubic-bezier(.2,.9,.25,1)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@media (max-width:900px){.nav-links{display:none}.prog{margin-left:auto}}
+@media (max-width:480px){.nav-in{padding-inline:16px;gap:10px}.brand span{display:none}}
+
+/* hero */
+.hero{max-width:980px;margin:0 auto;padding:76px 20px 8px;text-align:center}
+.kicker{font:600 15px/1.2 var(--font);color:var(--orange);letter-spacing:.005em;margin:0 0 10px}
+.hero h1{font:700 clamp(46px,8.6vw,92px)/1.0 var(--font-display);letter-spacing:-.045em;margin:0 0 18px;text-wrap:balance}
+.hero h1 .grad{background:linear-gradient(92deg,var(--p-mid),var(--p-final) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:clamp(19px,2.5vw,23px);line-height:1.4;color:var(--fg-2);max-width:31em;margin:0 auto 28px;text-wrap:balance}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{appearance:none;border:0;font:500 16px/1 var(--font);padding:12px 22px;border-radius:980px;background:var(--accent);color:var(--accent-fg);cursor:pointer;transition:transform .1s ease-out,filter .2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.btn.soft{background:var(--line);color:var(--fg)}
+.btn.sm{font-size:14px;padding:9px 16px}
+
+/* plan */
+.plan{max-width:1020px;margin:44px auto 0;padding-inline:20px}
+.plan-card{background:var(--surface);border-radius:28px;padding:26px;box-shadow:var(--shadow)}
+.plan-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px;margin-bottom:16px}
+.plan-head h2{font:700 28px/1.1 var(--font-display);letter-spacing:-.025em;margin:0}
+.plan-head p{margin:0;color:var(--fg-3);font-size:15px}
+.bar{display:flex;height:46px;border-radius:12px;overflow:hidden;gap:2px}
+.bar button{border:0;padding:0;cursor:pointer;background:var(--seg);color:var(--on-seg);font:700 12px/1 var(--font);min-width:0;transition:filter .2s,transform .1s ease-out;opacity:.92}
+.bar button:hover{filter:brightness(1.12);opacity:1}
+.bar button:active{transform:scaleY(.94)}
+.bar button.done{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 18px;font-size:13px;color:var(--fg-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.plan-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:0 28px}
+.prow{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);color:var(--fg);font-size:15px}
+.prow:hover{text-decoration:none;background:color-mix(in srgb,var(--line) 50%,transparent)}
+.prow .tm{font-family:var(--mono);font-size:12.5px;color:var(--fg-3);font-variant-numeric:tabular-nums}
+.prow .nm{min-width:0}
+.prow .nm small{color:var(--fg-3);font-size:12px;margin-left:6px}
+.prow.done .nm{color:var(--fg-3);text-decoration:line-through;text-decoration-color:var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:1px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:980px;background:var(--line);color:var(--fg-2);white-space:nowrap}
+.tag.must{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.plan-note{margin:16px 0 0;font-size:14px;color:var(--fg-3)}
+
+/* exam map */
+.map{max-width:1020px;margin:20px auto 0;padding-inline:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.exam{background:var(--surface);border-radius:28px;padding:24px 26px;box-shadow:var(--shadow)}
+.exam h3{font:700 24px/1.15 var(--font-display);letter-spacing:-.02em;margin:0 0 4px}
+.exam .meta{color:var(--fg-3);font-size:14px;margin:0 0 14px}
+.exam ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.exam li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.exam li .tn{font-weight:600;color:var(--fg-3);font-variant-numeric:tabular-nums}
+.exam li a{font-size:13px;white-space:nowrap}
+
+/* page layout */
+.layout{max-width:1200px;margin:0 auto;padding-inline:20px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 68px);align-self:start;max-height:calc(100vh - 92px);overflow:auto;padding-block:28px 24px;font-size:14px}
+.toc .part{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin:18px 0 6px}
+.toc .part:first-child{margin-top:0}
+.toc a{display:grid;grid-template-columns:22px minmax(0,1fr) 14px;gap:6px;align-items:center;padding:5px 8px;border-radius:9px;color:var(--fg-2);line-height:1.3}
+.toc a:hover{text-decoration:none;background:var(--line);color:var(--fg)}
+.toc a.cur{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
+.toc a .n{font-variant-numeric:tabular-nums;color:var(--fg-3);font-size:12px}
+.toc a .ck{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
+.toc a.done .ck{background:var(--green);border-color:var(--green)}
+main{min-width:0;max-width:780px;padding-bottom:80px}
+@media (max-width:1100px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}main{margin-inline:auto;width:100%}}
+.menu .toc{display:block;position:static;max-height:none;padding:6px}
+
+/* chapters */
+.chapter{padding-block:76px 12px;border-top:1px solid var(--line)}
+.chapter:first-of-type{border-top:0}
+.eyebrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--fg-3);font-weight:500}
+.eyebrow .num{color:var(--seg,var(--accent));font-weight:700}
+h2{font:700 clamp(31px,4.8vw,46px)/1.07 var(--font-display);letter-spacing:-.03em;margin:10px 0 12px;text-wrap:balance}
+.lede{font-size:clamp(18px,2.2vw,21px);line-height:1.45;color:var(--fg-2);margin:0 0 26px;max-width:36em;text-wrap:pretty}
+h3{font:600 clamp(21px,2.6vw,25px)/1.2 var(--font-display);letter-spacing:-.02em;margin:46px 0 12px;text-wrap:balance}
+h4{font:600 17px/1.3 var(--font);margin:26px 0 8px;letter-spacing:-.01em}
+p{margin:0 0 14px;max-width:66ch}
+ul.plain{margin:0 0 14px;padding-left:1.2em}
+ul.plain li{margin:4px 0}
+.muted{color:var(--fg-3)}
+.small{font-size:14px}
+
+/* callouts */
+.box{--c:var(--accent);border-radius:var(--r-md);padding:14px 18px;margin:14px 0;background:color-mix(in srgb,var(--c) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 24%,transparent)}
+.box>.lbl{display:block;font:700 11.5px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin-bottom:8px}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+.box.ask{--c:var(--red)}
+.box.ans{--c:var(--green)}
+.box.hook{--c:var(--purple)}
+.box.hook p{font-weight:500}
+.box.trap{--c:var(--orange)}
+.box.swap{--c:var(--teal)}
+.box.idea{--c:var(--accent)}
+
+.tile{background:var(--surface);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow);min-width:0}
+.tile h4{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:14px 0}
+.gloss .tile p{font-size:15px;margin:0;color:var(--fg-2)}
+.gloss .tile h4{margin-bottom:6px}
+
+.tw{overflow-x:auto;border-radius:var(--r-md);background:var(--surface);box-shadow:var(--shadow);margin:14px 0}
+table.t{border-collapse:collapse;width:100%;font-size:15px}
+.t th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-3);font-weight:700;text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.t td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+.t tr:last-child td{border-bottom:0}
+.t td.num,.t th.num{text-align:right;font-variant-numeric:tabular-nums}
+.t tr.win td{background:color-mix(in srgb,var(--green) 10%,transparent);font-weight:600}
+
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0;display:grid;gap:12px}
+ol.steps>li{counter-increment:s;position:relative;padding-left:40px;min-width:0}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font:700 13px/26px var(--font);text-align:center}
+
+details.sol{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow);margin:12px 0}
+details.sol>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:600;display:flex;align-items:center;gap:12px;border-radius:var(--r-md)}
+details.sol>summary::-webkit-details-marker{display:none}
+details.sol>summary::before{content:"";flex:none;width:7px;height:7px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+details.sol[open]>summary::before{transform:rotate(45deg)}
+details.sol>summary .hint{margin-left:auto;font-weight:500;font-size:13px;color:var(--accent)}
+details.sol .in{padding:2px 18px 16px;min-width:0}
+details.sol[open] .in{animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+.q{font-weight:500;margin:0 0 8px}
+.qa{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px 20px;margin:14px 0;min-width:0}
+.qa .src{font-size:12px;font-weight:600;color:var(--red);letter-spacing:.02em;margin-bottom:6px}
+.qa .q{font-size:17px}
+.qa .a{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.qa .a>p:last-child{margin-bottom:0}
+.qa .memo{font-size:14px;color:var(--purple);font-weight:600;margin-top:8px}
+
+.done-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:40px;padding:18px 20px;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.done-row .nx{font-size:15px}
+.mark{appearance:none;border:0;cursor:pointer;font:600 15px/1 var(--font);padding:11px 18px;border-radius:980px;background:var(--line);color:var(--fg);display:inline-flex;align-items:center;gap:8px;transition:transform .1s ease-out,background .2s}
+.mark:active{transform:scale(.96)}
+.mark .ck{width:18px;height:18px;border-radius:50%;border:2px solid var(--fg-3);display:grid;place-items:center}
+.mark[aria-pressed="true"]{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+.mark[aria-pressed="true"] .ck{background:var(--green);border-color:var(--green)}
+.mark[aria-pressed="true"] .ck::after{content:"";width:5px;height:9px;border:solid var(--surface);border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+
+/* distributions */
+.dist-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 4px}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;user-select:none}
+.switch input{appearance:none;width:44px;height:26px;border-radius:980px;background:var(--line);position:relative;cursor:pointer;margin:0;transition:background .25s}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.3,1.3,.5,1)}
+.switch input:checked{background:var(--green)}
+.switch input:checked::after{transform:translateX(18px)}
+.dist{display:flex;flex-direction:column;gap:6px}
+.dist h4{margin:0;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.dist h4 small{font-weight:500;color:var(--fg-3);font-size:12.5px;text-align:right}
+.dist .f{transition:filter .3s ease;border-radius:8px;overflow-x:auto;overflow-y:hidden}
+.dist .facts{font-size:14px;color:var(--fg-2);margin:0}
+.quiz .dist .f,.quiz .dist .facts{filter:blur(8px);cursor:pointer}
+.quiz .dist.show .f,.quiz .dist.show .facts{filter:none}
+
+/* dice grid */
+.dice{display:grid;grid-template-columns:auto repeat(3,52px);gap:6px;align-items:center;justify-content:start;margin:12px 0;font-variant-numeric:tabular-nums}
+.dice .h{font-size:12px;color:var(--fg-3);text-align:center;font-weight:600}
+.dice .c{height:44px;border-radius:10px;display:grid;place-items:center;font-weight:600;background:var(--surface);box-shadow:var(--shadow);color:var(--fg-3)}
+.dice .c.a{background:color-mix(in srgb,var(--accent) 16%,var(--surface));color:var(--fg)}
+.dice .c.aa{background:var(--green);color:var(--surface)}
+
+/* plots + tools */
+.plot{display:block;width:100%;height:auto}
+.plot .ax{stroke:var(--fg-3);stroke-width:1}
+.plot .gridl{stroke:var(--line);stroke-width:1}
+.plot text{fill:var(--fg-3);font:12px var(--font)}
+.plot .s-prior{fill:none;stroke:var(--fg-3);stroke-width:2;stroke-dasharray:6 5}
+.plot .s-post{fill:none;stroke:var(--accent);stroke-width:2.6}
+.plot .a-post{fill:color-mix(in srgb,var(--accent) 14%,transparent);stroke:none}
+.plot .s-3{fill:none;stroke:var(--p-final);stroke-width:2.4}
+.plot .s-4{fill:none;stroke:var(--orange);stroke-width:2.4}
+.plot .s-5{fill:none;stroke:var(--green);stroke-width:2.4}
+.plot .mk{stroke:var(--red);stroke-width:1.6;stroke-dasharray:3 3}
+.plot .mk-t{fill:var(--red);font-weight:600}
+.keys{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--fg-2);margin-top:6px}
+.keys i{display:inline-block;width:16px;height:3px;border-radius:2px;margin-right:6px;vertical-align:3px}
+
+.tool{background:var(--surface);border-radius:26px;box-shadow:var(--shadow);padding:22px;margin:20px 0}
+.tool-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;align-items:baseline;margin-bottom:14px}
+.tool-h h4{margin:0;font:700 20px/1.2 var(--font-display);letter-spacing:-.015em}
+.tool-h span{font-size:13px;color:var(--fg-3)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:10px;margin-bottom:12px}
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld label{font-size:12px;font-weight:600;color:var(--fg-3);letter-spacing:.02em}
+.fld.wide{grid-column:1/-1}
+input[type=number],input[type=text],select{font:inherit;font-size:15px;padding:9px 11px;border-radius:11px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);min-width:0;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.err{color:var(--red);font-size:14px;margin:6px 0}
+.out{border-top:1px solid var(--line);padding-top:12px;margin-top:4px;min-width:0}
+.out .res{font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{appearance:none;border:0;font:500 13px/1 var(--font);padding:8px 13px;border-radius:980px;background:var(--line);color:var(--fg);cursor:pointer;transition:transform .1s ease-out}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--fg);color:var(--bg)}
+.cls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px;margin-bottom:12px}
+.cls{background:var(--surface-2);border-radius:16px;padding:12px;box-shadow:inset 0 0 0 1px var(--line);min-width:0}
+.cls b{display:block;font-size:13px;margin-bottom:8px}
+.cls .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:6px}
+.cls .row.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cls input{padding:7px 8px;font-size:14px}
+.cls .cap{font-size:11px;color:var(--fg-3);margin:2px 0 4px}
+
+/* true/false */
+.tf-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:10px 0 16px}
+.score{font:700 28px/1 var(--font-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.score small{font-size:14px;font-weight:500;color:var(--fg-3);letter-spacing:0}
+.tf{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px 18px;margin:10px 0;display:grid;gap:10px;transition:box-shadow .3s}
+.tf .st{font-size:16px;font-weight:500}
+.tf .btns{display:flex;gap:8px}
+.tf .btns button{appearance:none;border:0;cursor:pointer;font:600 14px/1 var(--font);padding:9px 18px;border-radius:980px;background:var(--line);color:var(--fg);transition:transform .1s ease-out}
+.tf .btns button:active{transform:scale(.95)}
+.tf .why{font-size:15px;color:var(--fg-2);border-top:1px solid var(--line);padding-top:10px}
+.tf .why b{color:var(--fg)}
+.tf.right{box-shadow:0 0 0 2px var(--green)}
+.tf.wrong{box-shadow:0 0 0 2px var(--red)}
+.tf.right .why b.v{color:var(--green)}
+.tf.wrong .why b.v{color:var(--red)}
+.tf .btns button.pick{background:var(--fg);color:var(--bg)}
+
+/* cheat sheet */
+.cheat{background:var(--surface);border-radius:26px;box-shadow:var(--shadow);padding:6px 4px;overflow-x:auto}
+.cheat table{border-collapse:collapse;width:100%;font-size:14.5px}
+.cheat td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.cheat tr:last-child td{border-bottom:0}
+.cheat td:first-child{font-weight:600;white-space:nowrap;color:var(--fg-2);width:1%}
+.hooks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px;margin:16px 0}
+.hooks div{background:color-mix(in srgb,var(--purple) 9%,var(--surface));border-radius:16px;padding:14px 16px;font-weight:600;font-size:15px;color:var(--fg);border:1px solid color-mix(in srgb,var(--purple) 20%,transparent)}
+.hooks div span{display:block;font-weight:500;font-size:13px;color:var(--fg-3);margin-top:4px}
+footer{max-width:1200px;margin:0 auto;padding:28px 20px 56px;color:var(--fg-3);font-size:13px;border-top:1px solid var(--line)}
+
+@media (max-width:600px){
+  body{font-size:16.5px}
+  .hero{padding-top:52px}
+  .plan-card,.exam,.tool{padding:18px;border-radius:22px}
+  .chapter{padding-top:56px}
+  .prow{grid-template-columns:78px minmax(0,1fr) auto;font-size:14px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+@media (prefers-reduced-transparency: reduce){
+  .nav{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .menu{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false },
+  startup: { pageReady: function(){ return MathJax.startup.defaultPageReady().then(function(){ if (window.__fitMath) window.__fitMath(document); }); } }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">Stat Learning <span>Retake</span></a>
+    <nav class="nav-links" aria-label="Parts">
+      <a href="#plan">Plan</a>
+      <a href="#c0">Basics</a>
+      <a href="#c1">Midterm</a>
+      <a href="#c6">Final</a>
+      <a href="#c13">Practice</a>
+      <a href="#c16">Cheat sheet</a>
+    </nav>
+    <div class="prog" aria-live="polite">
+      <svg class="ring" viewBox="0 0 24 24" aria-hidden="true"><circle class="rb" cx="12" cy="12" r="9"/><circle class="rf" id="ringFill" cx="12" cy="12" r="9" stroke-dasharray="56.55" stroke-dashoffset="56.55"/></svg>
+      <span id="progText">0/17 done</span>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Chapters</button>
+    <div class="menu" id="menu" hidden><div class="toc" id="tocMenu"></div></div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <p class="kicker">Statistical Learning · Midterm + Final retake</p>
+  <h1>Pass the <span class="grad">retake.</span></h1>
+  <p class="sub">Every question type from the 2026 midterm and final, explained from zero, in the order you should learn it. Built to fit into three hours.</p>
+  <div class="cta">
+    <a class="btn" href="#c0">Start with chapter 0</a>
+    <a class="btn ghost" href="#c13">Test yourself first</a>
+  </div>
+</section>
+
+<section class="plan" id="plan" aria-labelledby="planH">
+  <div class="plan-card">
+    <div class="plan-head">
+      <h2 id="planH">Your three hours</h2>
+      <p>Tap a block to jump. Mark each chapter done at its end.</p>
+    </div>
+    <div class="bar" id="planBar" role="list"></div>
+    <div class="legend">
+      <span><i style="background:var(--p-basics)"></i>Basics</span>
+      <span><i style="background:var(--p-mid)"></i>Midterm topics</span>
+      <span><i style="background:var(--p-final)"></i>Final topics</span>
+      <span><i style="background:var(--p-prac)"></i>Practice</span>
+    </div>
+    <div class="plan-list" id="planList"></div>
+    <p class="plan-note">Short on time? Do only the chapters marked <span class="tag must">Must</span>. They cover every task that appeared in 2026.</p>
+  </div>
+</section>
+
+<section class="map" aria-label="What the 2026 exams asked">
+  <div class="exam">
+    <h3>Midterm 2026</h3>
+    <p class="meta">April 22 · 90 minutes · 4 tasks</p>
+    <ol>
+      <li><span class="tn">1a</span><span>Define the Beta density (with its range) · <a href="#c1">Ch 1</a></span></li>
+      <li><span class="tn">1b</span><span>Dice: P(A twice | A at least once) · <a href="#c2">Ch 2</a></span></li>
+      <li><span class="tn">1c</span><span>Geometric is memoryless · <a href="#c2">Ch 2</a></span></li>
+      <li><span class="tn">2</span><span>Negative binomial + Beta: MLE, posterior, mean, predictive · <a href="#c3">Ch 3</a></span></li>
+      <li><span class="tn">3</span><span>Poisson + Gamma: likelihood, posterior, mode, MAP · <a href="#c3">Ch 3</a></span></li>
+      <li><span class="tn">4</span><span>Bayes for small data; flat prior true/false · <a href="#c5">Ch 5</a></span></li>
+    </ol>
+  </div>
+  <div class="exam">
+    <h3>Final 2026</h3>
+    <p class="meta">June 24 · 90 minutes · 5 tasks</p>
+    <ol>
+      <li><span class="tn">1a–h</span><span>Eight short theory questions · <a href="#c6">Ch 6</a></span></li>
+      <li><span class="tn">2</span><span>Geometric (drinks) + Beta posterior · <a href="#c3">Ch 3</a></span></li>
+      <li><span class="tn">3</span><span>QDA: define, classify a point, logistic regression · <a href="#c7">Ch 7</a></span></li>
+      <li><span class="tn">4</span><span>Naive Bayes: classify, why priors · <a href="#c8">Ch 8</a></span></li>
+      <li><span class="tn">5</span><span>Four true/false statements with reasons · <a href="#c13">Ch 13</a></span></li>
+    </ol>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="toc" id="toc" aria-label="Chapters"></aside>
+  <main id="main">
+
+<!-- ============ CHAPTER 0 ============ -->
+<section class="chapter" id="c0" style="--seg:var(--p-basics)">
+  <div class="eyebrow"><span class="num">Chapter 0</span><span>8 min · Basics</span><span class="tag must">Must</span></div>
+  <h2>Five moves solve almost the whole exam.</h2>
+  <p class="lede">Every task in both 2026 exams was one of five moves, applied to a different distribution. Learn the words and the moves here. Every later chapter is practice of these moves.</p>
+
+  <h3>The six words you need</h3>
+  <div class="grid3 gloss">
+    <div class="tile"><h4>Parameter \(\theta\)</h4><p>The unknown number. The chance a coin shows heads, or the average goals per match \(\lambda\). Also called \(p, q, \lambda, \eta\).</p></div>
+    <div class="tile"><h4>Data \(D\)</h4><p>What you observed: \(D=\{x_1,\dots,x_n\}\). Independent data means you <b>multiply</b> the probabilities.</p></div>
+    <div class="tile"><h4>Likelihood \(p(D\mid\theta)\)</h4><p>How well a value of \(\theta\) explains the data. Same formula as the model, read as a function of \(\theta\).</p></div>
+    <div class="tile"><h4>Prior \(p(\theta)\)</h4><p>What you believe about \(\theta\) before the data. Usually Beta or Gamma.</p></div>
+    <div class="tile"><h4>Posterior \(p(\theta\mid D)\)</h4><p>Your belief after the data. Always: posterior \(\propto\) likelihood \(\times\) prior.</p></div>
+    <div class="tile"><h4>\(\propto\) “proportional to”</h4><p>Equal up to a constant. You may throw away every factor that does not contain \(\theta\): \(k!\), binomial coefficients, \(\Gamma(a)\), \(b^a\).</p></div>
+  </div>
+
+  <h3>The five moves</h3>
+  <ol class="steps">
+    <li><b>MLE (maximum likelihood estimate).</b> Take the log of the likelihood, differentiate, set it to 0, solve for \(\theta\).<br><span class="muted">Hook: log, derivative, zero.</span></li>
+    <li><b>Posterior.</b> Multiply likelihood by prior, drop constants, add the exponents, recognise the family (Beta or Gamma).<br><span class="muted">Hook: multiply, drop, add, recognise.</span></li>
+    <li><b>Point estimates.</b> The posterior mean (the average) or the MAP (the peak, which is the mode). Read them from the family’s formula.</li>
+    <li><b>Predictive.</b> The probability of the next observation: average the model over the posterior, \(p(x_{\text{new}}\mid D)=\int p(x_{\text{new}}\mid\theta)\,p(\theta\mid D)\,d\theta\).</li>
+    <li><b>Classify.</b> For each class compute score \(=\log(\text{prior}) + \log p(x\mid\text{class})\). The largest score wins.</li>
+  </ol>
+
+  <h3>See all five on one coin</h3>
+  <p>You flip a coin \(n=10\) times and see \(S=7\) heads. One flip has probability \(\theta^{x}(1-\theta)^{1-x}\) with \(x\in\{0,1\}\).</p>
+  <div class="tile">
+    <p><b>1 · MLE.</b> Likelihood \(\theta^{7}(1-\theta)^{3}\). Log: \(\ell(\theta)=7\log\theta+3\log(1-\theta)\).</p>
+    \[\ell'(\theta)=\frac{7}{\theta}-\frac{3}{1-\theta}=0\;\Rightarrow\;7(1-\theta)=3\theta\;\Rightarrow\;\hat\theta_{\text{MLE}}=\frac{7}{10}.\]
+    <p><b>2 · Posterior.</b> Prior \(\mathrm{Beta}(2,2)\propto\theta^{1}(1-\theta)^{1}\). Multiply and add exponents:</p>
+    \[p(\theta\mid D)\propto\theta^{7}(1-\theta)^{3}\cdot\theta^{1}(1-\theta)^{1}=\theta^{8}(1-\theta)^{4}\;\Rightarrow\;\mathrm{Beta}(9,5).\]
+    <p><b>3 · Estimates.</b> Mean \(\frac{9}{9+5}=0.64\). MAP \(\frac{9-1}{9+5-2}=\frac{8}{12}=0.67\).</p>
+    <p><b>4 · Predictive.</b> \(P(\text{next flip is heads}\mid D)=\) posterior mean \(=0.64\).</p>
+    <p style="margin:0"><b>5 · Classify</b> is the same idea with classes instead of \(\theta\). You will see it in chapters 7 and 8.</p>
+  </div>
+
+  <h3>Math toolbox</h3>
+  <p>These are the only calculation rules the exams need.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Tool</th><th>Rule</th></tr>
+    <tr><td>Logs</td><td>\(\log(ab)=\log a+\log b,\;\;\log a^k=k\log a,\;\;\log\prod_i=\sum_i\log\)</td></tr>
+    <tr><td>Derivatives</td><td>\((\log x)'=\tfrac1x,\;\;(\log(1-x))'=-\tfrac{1}{1-x},\;\;(e^{ax})'=ae^{ax}\)</td></tr>
+    <tr><td>Powers</td><td>\(x^a x^b=x^{a+b},\;\;e^{a}e^{b}=e^{a+b},\;\;\prod_i x^{k_i}=x^{\sum_i k_i}\)</td></tr>
+    <tr><td>Gamma function</td><td>\(\Gamma(n)=(n-1)!,\;\;\Gamma(a+1)=a\,\Gamma(a)\)</td></tr>
+    <tr><td>Beta integral</td><td>\(\int_0^1\theta^{x-1}(1-\theta)^{y-1}d\theta=B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}\)</td></tr>
+    <tr><td>Gamma integral</td><td>\(\int_0^\infty\lambda^{a-1}e^{-b\lambda}d\lambda=\frac{\Gamma(a)}{b^a}\)</td></tr>
+    <tr><td>Geometric series</td><td>\(\sum_{j\ge0}q^j=\frac{1}{1-q}\) for \(|q|\lt 1\)</td></tr>
+    <tr><td>2×2 matrix</td><td>\(\det\begin{pmatrix}a & b\\ c & d\end{pmatrix}=ad-bc,\;\;\begin{pmatrix}a & b\\ c & d\end{pmatrix}^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d & -b\\ -c & a\end{pmatrix}\)</td></tr>
+    <tr><td>Quadratic form</td><td>\(v^TAv=a v_1^2+2b\,v_1v_2+d\,v_2^2\) for symmetric \(A=\begin{pmatrix}a & b\\ b & d\end{pmatrix}\)</td></tr>
+  </table></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>A density is fixed by its shape. The constant only makes it integrate to 1. So: find the shape, name the family, done.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c0" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c1">Next: Distributions →</a></div>
+</section>
+
+<!-- ============ CHAPTER 1 ============ -->
+<section class="chapter" id="c1" style="--seg:var(--p-mid)">
+  <div class="eyebrow"><span class="num">Chapter 1</span><span>12 min · Midterm</span><span class="tag must">Must</span></div>
+  <h2>Distributions to know by heart.</h2>
+  <p class="lede">The midterm opens with “define this distribution”. The whole exam uses the same dozen formulas. Learn them here, then switch on quiz mode and test yourself.</p>
+
+  <div class="box ask"><span class="lbl">Asked</span><p><b>Midterm 2026, 1(a):</b> Define the Beta distribution by giving the density. Don’t forget to specify the range of values.<br><b>Midterm 2025, 1(a–b):</b> Define the Binomial distribution. Give its conjugate prior by its density.</p></div>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p>For parameters \(a\gt 0,\ b\gt 0\):</p>
+    \[p(\theta\mid a,b)=\frac{1}{B(a,b)}\,\theta^{a-1}(1-\theta)^{b-1}\quad\text{for }\theta\in[0,1],\qquad p(\theta)=0\text{ otherwise},\]
+    <p>with \(B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}\). Mean \(\frac{a}{a+b}\).</p>
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Always write three things: the formula, the range of the variable, the range of the parameters. Add the mean for a bonus.</p></div>
+
+  <h3>The dozen</h3>
+  <div class="dist-tools">
+    <label class="switch"><input type="checkbox" id="quizToggle"> Quiz mode: hide the formulas, tap a card to check</label>
+  </div>
+  <div class="grid2" id="distGrid">
+    <div class="tile dist"><h4>Bernoulli(\(\theta\)) <small>one coin flip</small></h4><div class="f">\[\theta^{x}(1-\theta)^{1-x},\quad x\in\{0,1\}\]</div><p class="facts">\(\theta\in[0,1]\). Mean \(\theta\), variance \(\theta(1-\theta)\).</p></div>
+    <div class="tile dist"><h4>Binomial(\(N,\theta\)) <small>successes in N flips</small></h4><div class="f">\[\binom{N}{k}\theta^{k}(1-\theta)^{N-k},\quad k=0,\dots,N\]</div><p class="facts">\(\theta\in[0,1]\). Mean \(N\theta\). \(\binom Nk=\frac{N!}{k!(N-k)!}\).</p></div>
+    <div class="tile dist"><h4>Geometric, trials <small>tries until first success</small></h4><div class="f">\[p(1-p)^{k-1},\quad k=1,2,\dots\]</div><p class="facts">\(p\in(0,1]\). Mean \(\frac1p\). Memoryless.</p></div>
+    <div class="tile dist"><h4>Geometric, failures <small>failures before success</small></h4><div class="f">\[q(1-q)^{k},\quad k=0,1,2,\dots\]</div><p class="facts">Mean \(\frac{1-q}{q}\). Same model, counted from 0.</p></div>
+    <div class="tile dist"><h4>Negative binomial <small>failures before r-th success</small></h4><div class="f">\[\binom{k+r-1}{k}p^{r}(1-p)^{k},\quad k=0,1,\dots\]</div><p class="facts">\(r\) known. Mean \(\frac{r(1-p)}{p}\). \(r=1\) gives the geometric.</p></div>
+    <div class="tile dist"><h4>Poisson(\(\lambda\)) <small>counts: goals, calls</small></h4><div class="f">\[e^{-\lambda}\frac{\lambda^{k}}{k!},\quad k=0,1,2,\dots\]</div><p class="facts">\(\lambda\gt 0\). Mean \(=\) variance \(=\lambda\).</p></div>
+    <div class="tile dist"><h4>Exponential(\(\lambda\)) <small>waiting times</small></h4><div class="f">\[\lambda e^{-\lambda x},\quad x\ge 0\]</div><p class="facts">\(\lambda\gt 0\). Mean \(\frac1\lambda\). \(P(X\gt t)=e^{-\lambda t}\).</p></div>
+    <div class="tile dist"><h4>Gaussian \(\mathcal N(\mu,\sigma^2)\) <small>measurements</small></h4><div class="f">\[\frac{1}{\sqrt{2\pi\sigma^2}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}},\quad x\in\mathbb R\]</div><p class="facts">Mean \(\mu\), variance \(\sigma^2\gt 0\).</p></div>
+    <div class="tile dist"><h4>Beta(\(a,b\)) <small>a probability</small></h4><div class="f">\[\frac{\theta^{a-1}(1-\theta)^{b-1}}{B(a,b)},\quad\theta\in[0,1]\]</div><p class="facts">\(a,b\gt 0\). Mean \(\frac{a}{a+b}\), mode \(\frac{a-1}{a+b-2}\).</p></div>
+    <div class="tile dist"><h4>Gamma(\(a,b\)) <small>a positive rate</small></h4><div class="f">\[\frac{b^{a}}{\Gamma(a)}\lambda^{a-1}e^{-b\lambda},\quad\lambda\gt 0\]</div><p class="facts">\(a,b\gt 0\). Mean \(\frac ab\), mode \(\frac{a-1}{b}\), variance \(\frac{a}{b^2}\).</p></div>
+    <div class="tile dist"><h4>Dirichlet(\(\alpha\)) <small>a probability vector</small></h4><div class="f">\[\frac{\Gamma(\sum_k\alpha_k)}{\prod_k\Gamma(\alpha_k)}\prod_{k=1}^{K}\theta_k^{\alpha_k-1}\]</div><p class="facts">\(\theta_k\ge0,\ \sum_k\theta_k=1\). Mean \(\frac{\alpha_k}{\sum_j\alpha_j}\).</p></div>
+    <div class="tile dist"><h4>Multivariate Gaussian <small>vectors in \(\mathbb R^D\)</small></h4><div class="f">\[\frac{1}{(2\pi)^{D/2}|\Sigma|^{1/2}}e^{-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)}\]</div><p class="facts">\(\Sigma\) symmetric, positive definite. \(|\Sigma|=\det\Sigma\).</p></div>
+  </div>
+
+  <h3>What the two priors look like</h3>
+  <div class="grid2">
+    <div class="tile"><h4 style="margin:0 0 6px">Beta lives on [0, 1]</h4><div id="plotBeta"></div><div class="keys"><span><i style="background:var(--fg-3)"></i>Beta(1,1) flat</span><span><i style="background:var(--p-final)"></i>Beta(2,2)</span><span><i style="background:var(--orange)"></i>Beta(5,2)</span></div></div>
+    <div class="tile"><h4 style="margin:0 0 6px">Gamma lives on (0, ∞)</h4><div id="plotGamma"></div><div class="keys"><span><i style="background:var(--fg-3)"></i>Gamma(1,1)</span><span><i style="background:var(--p-final)"></i>Gamma(2,1)</span><span><i style="background:var(--orange)"></i>Gamma(5,1)</span></div></div>
+  </div>
+
+  <h3>Which prior goes with which model</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Unknown parameter is…</th><th>Choose prior</th><th>Used with</th></tr>
+    <tr><td>a probability, between 0 and 1</td><td><b>Beta</b></td><td>Bernoulli, Binomial, Geometric, Negative binomial</td></tr>
+    <tr><td>a rate, any number above 0</td><td><b>Gamma</b></td><td>Poisson, Exponential, any \(\lambda^{(\dots)}e^{-(\dots)\lambda}\) shape</td></tr>
+    <tr><td>a vector of probabilities summing to 1</td><td><b>Dirichlet</b></td><td>Categorical, Multinomial, bag of words, Naive Bayes class prior</td></tr>
+    <tr><td>a mean of Gaussian data</td><td><b>Gaussian</b></td><td>Gaussian with known variance, Bayesian linear regression</td></tr>
+  </table></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Beta for a probability. Gamma for a rate. Dirichlet for several probabilities at once.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c1" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c2">Next: Probability basics →</a></div>
+</section>
+
+<!-- ============ CHAPTER 2 ============ -->
+<section class="chapter" id="c2" style="--seg:var(--p-mid)">
+  <div class="eyebrow"><span class="num">Chapter 2</span><span>12 min · Midterm</span><span class="tag must">Must</span></div>
+  <h2>Probability basics that score easy points.</h2>
+  <p class="lede">Warm-up questions: a conditional probability with dice, the memoryless property, Bayes’ theorem, and a few definitions. Each has one recipe.</p>
+
+  <h3>Conditional probability by counting</h3>
+  <div class="box ask"><span class="lbl">Midterm 2026, 1(b)</span><p>A fair die has sides {A, B, C}, each with probability 1/3. It is rolled twice. Calculate the probability that A occurs twice, given that it occurred at least once.</p></div>
+  <p>Draw all \(3\times3=9\) equally likely outcomes. Blue cells contain at least one A. The green cell is AA.</p>
+  <div class="dice" aria-label="Grid of the nine outcomes of two rolls">
+    <span></span><span class="h">A</span><span class="h">B</span><span class="h">C</span>
+    <span class="h">A</span><span class="c aa">AA</span><span class="c a">AB</span><span class="c a">AC</span>
+    <span class="h">B</span><span class="c a">BA</span><span class="c">BB</span><span class="c">BC</span>
+    <span class="h">C</span><span class="c a">CA</span><span class="c">CB</span><span class="c">CC</span>
+  </div>
+  <ol class="steps">
+    <li>Definition: \(P(E\mid F)=\dfrac{P(E\cap F)}{P(F)}\). “A twice” already implies “A at least once”, so \(P(E\cap F)=P(AA)\).</li>
+    <li>\(P(AA)=\frac13\cdot\frac13=\frac19\).</li>
+    <li>\(P(\text{at least one A})=1-P(\text{no A})=1-\left(\frac23\right)^2=\frac59\).</li>
+    <li>\(P(AA\mid\text{at least one A})=\dfrac{1/9}{5/9}=\dfrac15\).</li>
+  </ol>
+  <div class="box hook"><span class="lbl">Remember</span><p>Shrink the world to the condition, then count: 1 good cell out of 5.</p></div>
+  <div class="box trap"><span class="lbl">Trap</span><p>\(\frac13\) is the answer to a different question: “A twice, given the <i>first</i> roll is A”. “At least once” allows the A in either roll.</p></div>
+  <div class="box swap"><span class="lbl">If they change it</span><p>A die with \(m\) sides, two rolls: \(\dfrac{1/m^2}{1-(1-1/m)^2}=\dfrac{1}{2m-1}\). Four sides: \(\frac17\). Six sides: \(\frac1{11}\). More rolls: list or count outcomes the same way.</p></div>
+
+  <h3>Bayes’ theorem, marginal and conditional</h3>
+  <div class="box ask"><span class="lbl">Final 2026 1(a) · Final 2025 1(a) · Midterm 2025 1(c)</span><p>State Bayes’ theorem for densities. Give the posterior \(p(\lambda\mid D)\). Give the density of \(X\), and of \(X\) given \(Y=y\).</p></div>
+  <div class="box ans"><span class="lbl">Write this</span>
+    \[p(\theta\mid D)=\frac{p(D\mid\theta)\,p(\theta)}{p(D)},\qquad p(D)=\int p(D\mid\theta)\,p(\theta)\,d\theta.\]
+    \[\text{marginal: } p(x)=\int p(x,y)\,dy,\qquad\text{conditional: } p(x\mid y)=\frac{p(x,y)}{p(y)}\ \ (p(y)\gt 0).\]
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Posterior = likelihood × prior / evidence. Marginal = integrate the other variable out. Conditional = joint / marginal. For discrete variables replace \(\int\) by \(\sum\).</p></div>
+
+  <h3>The memoryless property</h3>
+  <div class="box ask"><span class="lbl">Midterm 2026, 1(c)</span><p>\(P(X=k)=p(1-p)^{k-1}\), \(k\in\{1,2,\dots\}\). Calculate \(P(X\ge n+m\mid X\ge n)\). Hint: \(\sum_{k\ge L}p(1-p)^{k-1}=(1-p)^{L-1}\sum_{k\ge1}p(1-p)^{k-1}\). The last sum is 1, but why?</p></div>
+  <ol class="steps">
+    <li><b>Why the sum is 1.</b> It adds the probabilities of all possible values of \(X\). All probabilities together give 1. (Or: geometric series \(p\cdot\frac{1}{1-(1-p)}=1\).)</li>
+    <li><b>Tail.</b> By the hint, \(P(X\ge L)=(1-p)^{L-1}\). In words: the first \(L-1\) tries all failed.</li>
+    <li><b>Intersection.</b> \(\{X\ge n+m\}\) is inside \(\{X\ge n\}\), so the intersection is just \(\{X\ge n+m\}\).</li>
+    <li><b>Divide.</b> \[P(X\ge n+m\mid X\ge n)=\frac{(1-p)^{n+m-1}}{(1-p)^{n-1}}=(1-p)^{m}.\]</li>
+  </ol>
+  <div class="box ans"><span class="lbl">Conclusion to write</span><p>The answer \((1-p)^m\) does not depend on \(n\). Having already waited \(n\) tries changes nothing. The geometric distribution is memoryless.</p></div>
+  <div class="box swap"><span class="lbl">If they change it</span><p>Exponential: \(P(X\gt t)=\int_t^\infty\lambda e^{-\lambda x}dx=e^{-\lambda t}\), so \(P(X\gt s+t\mid X\gt s)=\frac{e^{-\lambda(s+t)}}{e^{-\lambda s}}=e^{-\lambda t}\). Geometric counted from 0 (\(q(1-q)^k\)): \(P(X\ge L)=(1-q)^{L}\), same conclusion.</p></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>The coin has no memory.</p></div>
+
+  <h3>Independent vs uncorrelated</h3>
+  <div class="box ask"><span class="lbl">Final 2026, 5 (true/false)</span><p>There exists a pair \((X,Y)\) with correlation 0 but \(X\) and \(Y\) dependent. <b>True.</b></p></div>
+  <p>Take \(X\) uniform on \([-1,1]\) and \(Y=X^2\). Then \(\mathrm{Cov}(X,Y)=E[X^3]-E[X]E[X^2]=0-0=0\), but \(Y\) is completely determined by \(X\). Correlation only measures straight-line dependence; a parabola has none.</p>
+  <ul class="plain">
+    <li>Independent \(\Rightarrow\) uncorrelated (always).</li>
+    <li>Uncorrelated \(\Rightarrow\) independent only for jointly Gaussian variables.</li>
+  </ul>
+  <div class="box hook"><span class="lbl">Remember</span><p>Parabola: dependent, but zero correlation.</p></div>
+
+  <h3>Exponential family</h3>
+  <div class="box ask"><span class="lbl">Midterm 2025, 1(d)</span><p>Give one distribution in the exponential family (not Gamma or Exponential) and one that is not.</p></div>
+  <p>Form: \(p(x\mid\theta)=h(x)\exp\big(\eta(\theta)\,T(x)-A(\theta)\big)\), and the support (where \(p\gt 0\)) must not depend on \(\theta\).</p>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p><b>In:</b> Poisson, because \(e^{-\lambda}\frac{\lambda^x}{x!}=\frac{1}{x!}\exp(x\log\lambda-\lambda)\). Also Bernoulli, Binomial (fixed \(N\)), Gaussian, Beta.</p>
+    <p><b>Out:</b> Uniform on \([0,\theta]\): density \(\frac1\theta\) on \([0,\theta]\). Its support moves with \(\theta\). Also Student-t, Cauchy, Gaussian mixtures.</p>
+  </div>
+
+  <div class="done-row"><button class="mark" data-ch="c2" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c3">Next: The posterior task →</a></div>
+</section>
+
+<!-- ============ CHAPTER 3 ============ -->
+<section class="chapter" id="c3" style="--seg:var(--p-mid)">
+  <div class="eyebrow"><span class="num">Chapter 3</span><span>25 min · Midterm and Final</span><span class="tag must">Must</span></div>
+  <h2>The posterior task. It comes every time.</h2>
+  <p class="lede">Six exams in a row had the same task with a different distribution: Negative binomial, Poisson, Geometric, Exponential, even an unknown lifetime density. The steps never change. This is the most valuable chapter.</p>
+
+  <div class="box ask"><span class="lbl">Asked</span>
+    <ul class="plain">
+      <li><b>Midterm 2026, 2:</b> Negative binomial + Beta: MLE, posterior, mean, predictive.</li>
+      <li><b>Midterm 2026, 3:</b> Poisson (goals) + Gamma: likelihood constant, posterior, prior mode, MAP.</li>
+      <li><b>Final 2026, 2:</b> Geometric “one more drink” \(\lambda(1-\lambda)^{y-1}\): choose a prior, compute the posterior.</li>
+      <li><b>Final 2025, 3</b> and <b>Midterm 2025, 3</b> and <b>Retake 2025, 3:</b> Geometric, Exponential, Gompertz. Same steps.</li>
+    </ul>
+  </div>
+
+  <h3>The template</h3>
+  <ol class="steps">
+    <li><b>Likelihood.</b> Multiply over all data points. Collect the parameter into powers. Everything without the parameter is the constant.</li>
+    <li><b>MLE.</b> \(\ell=\log L\). Solve \(\ell'=0\).</li>
+    <li><b>Posterior.</b> Likelihood × prior. Add exponents. Recognise Beta or Gamma and read off the new parameters.</li>
+    <li><b>Mean / MAP / mode.</b> Plug the new parameters into the family’s formulas.</li>
+    <li><b>Predictive.</b> \(\int p(x\mid\theta)p(\theta\mid D)d\theta\) = model constant × ratio of normalising constants (chapter 4).</li>
+  </ol>
+
+  <h3>The kernel table</h3>
+  <p>With \(n\) data points and \(S=\sum_i k_i\) (the sum of the data). This table is the whole task in one line per model.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Model</th><th>Likelihood \(\propto\)</th><th>MLE</th><th>Prior</th><th>Posterior</th></tr>
+    <tr><td>Bernoulli</td><td>\(\theta^{S}(1-\theta)^{n-S}\)</td><td>\(\frac Sn\)</td><td>Beta(a, b)</td><td>\(\mathrm{Beta}(a+S,\ b+n-S)\)</td></tr>
+    <tr><td>Binomial, \(N\) each</td><td>\(\theta^{S}(1-\theta)^{nN-S}\)</td><td>\(\frac{S}{nN}\)</td><td>Beta(a, b)</td><td>\(\mathrm{Beta}(a+S,\ b+nN-S)\)</td></tr>
+    <tr><td>Geometric \(q(1-q)^k,\ k\ge0\)</td><td>\(q^{n}(1-q)^{S}\)</td><td>\(\frac{n}{n+S}\)</td><td>Beta(a, b)</td><td>\(\mathrm{Beta}(a+n,\ b+S)\)</td></tr>
+    <tr><td>Geometric \(\lambda(1-\lambda)^{y-1},\ y\ge1\)</td><td>\(\lambda^{n}(1-\lambda)^{S-n}\)</td><td>\(\frac nS\)</td><td>Beta(a, b)</td><td>\(\mathrm{Beta}(a+n,\ b+S-n)\)</td></tr>
+    <tr><td>Negative binomial (\(r\) known)</td><td>\(p^{nr}(1-p)^{S}\)</td><td>\(\frac{nr}{nr+S}\)</td><td>Beta(a, b)</td><td>\(\mathrm{Beta}(a+nr,\ b+S)\)</td></tr>
+    <tr><td>Poisson</td><td>\(e^{-n\lambda}\lambda^{S}\)</td><td>\(\frac Sn\)</td><td>Gamma(a, b)</td><td>\(\mathrm{Gamma}(a+S,\ b+n)\)</td></tr>
+    <tr><td>Exponential</td><td>\(\lambda^{n}e^{-\lambda\sum x_i}\)</td><td>\(\frac{n}{\sum x_i}\)</td><td>Gamma(a, b)</td><td>\(\mathrm{Gamma}(a+n,\ b+\sum x_i)\)</td></tr>
+  </table></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>“a gets the successes (or events), b gets the failures (or exposure).” Beta counts successes vs failures. Gamma counts events vs time or matches.</p></div>
+
+  <h3>Worked: Poisson + Gamma (Midterm 2026, Task 3)</h3>
+  <p class="muted">Goals per match: \(p(k\mid\lambda)=e^{-\lambda}\frac{\lambda^k}{k!}\). Prior \(p(\lambda)=\frac{b^a}{\Gamma(a)}\lambda^{a-1}e^{-b\lambda}\).</p>
+  <div class="tile">
+    <p><b>(a) Show \(p(D\mid\lambda)\propto e^{-n\lambda}\lambda^S\). Find the constant.</b></p>
+    \[p(D\mid\lambda)=\prod_{i=1}^n e^{-\lambda}\frac{\lambda^{k_i}}{k_i!}=\frac{1}{k_1!\cdots k_n!}\;e^{-n\lambda}\,\lambda^{S}.\]
+    <p>\(n\) factors \(e^{-\lambda}\) give \(e^{-n\lambda}\); the powers add to \(S\). The constant is \(\dfrac{1}{\prod_i k_i!}\).</p>
+    <p><b>(b) Posterior.</b></p>
+    \[p(\lambda\mid D)\propto e^{-n\lambda}\lambda^{S}\cdot\lambda^{a-1}e^{-b\lambda}=\lambda^{a+S-1}e^{-(b+n)\lambda}\;\Rightarrow\;\mathrm{Gamma}(a+S,\ b+n).\]
+    <p><b>(c) Mode of the prior (\(a\gt1\)).</b> Log, derivative, zero:</p>
+    \[\frac{d}{d\lambda}\big[(a-1)\log\lambda-b\lambda\big]=\frac{a-1}{\lambda}-b=0\;\Rightarrow\;\lambda=\frac{a-1}{b}.\]
+    <p>Second derivative \(-\frac{a-1}{\lambda^2}\lt 0\), so it is a maximum.</p>
+    <p style="margin:0"><b>(d) MAP</b> = mode of the posterior. Use (c) with the new parameters: \(\ \hat\lambda_{\text{MAP}}=\dfrac{a+S-1}{b+n}.\)</p>
+  </div>
+  <p style="margin-top:14px">Numbers: prior Gamma(2, 1), goals {3, 1, 4, 2}: \(n=4,\ S=10\). Posterior Gamma(12, 5). MLE \(2.5\), MAP \(\frac{11}{5}=2.2\), mean \(\frac{12}5=2.4\).</p>
+  <div class="box trap"><span class="lbl">Trap</span><p>In the Poisson the rate \(b\) grows by \(n\) (matches), the shape \(a\) grows by \(S\) (goals). Mode \(\frac{a-1}{b}\) is not the mean \(\frac ab\).</p></div>
+
+  <h3>Worked: Negative binomial + Beta (Midterm 2026, Task 2)</h3>
+  <p class="muted">\(f(k\mid p)=\binom{k+r-1}{k}p^{r}(1-p)^{k}\), \(r\) known. Hint: “things which don’t depend on \(p\) can be … ignored”.</p>
+  <div class="tile">
+    <p><b>(a) MLE.</b> The binomial coefficient has no \(p\): it is a constant.</p>
+    \[L(p)\propto p^{nr}(1-p)^{S},\quad\ell(p)=nr\log p+S\log(1-p),\quad\ell'(p)=\frac{nr}{p}-\frac{S}{1-p}=0\;\Rightarrow\;\hat p=\frac{nr}{nr+S}.\]
+    <p><b>(b) Posterior</b> with prior Beta(a, b):</p>
+    \[f(p\mid D)\propto p^{nr}(1-p)^{S}\,p^{a-1}(1-p)^{b-1}=p^{a+nr-1}(1-p)^{b+S-1}\;\Rightarrow\;\mathrm{Beta}(a+nr,\ b+S).\]
+    <p><b>(c) Posterior mean:</b> \(\ E[p\mid D]=\dfrac{a+nr}{a+b+nr+S}.\)</p>
+    <p><b>(d) Predictive.</b> Put \(\alpha=a+nr,\ \beta=b+S\). Here the coefficient stays, because it contains the new \(k\):</p>
+    \[f(k\mid D)=\int_0^1\binom{k+r-1}{k}p^{r}(1-p)^{k}\,\frac{p^{\alpha-1}(1-p)^{\beta-1}}{B(\alpha,\beta)}\,dp=\binom{k+r-1}{k}\frac{B(\alpha+r,\ \beta+k)}{B(\alpha,\beta)}.\]
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Successes over (successes + failures): \(nr\) successes in total, \(S\) failures in total. Predictive: “new B over old B”.</p></div>
+  <div class="box trap"><span class="lbl">Trap</span><p>The exponent of \(p\) is \(nr\), not \(n\) or \(r\). Drop the coefficient for the MLE and posterior, but keep it in the predictive.</p></div>
+
+  <h3>Worked: Geometric “one more drink” (Final 2026, Task 2)</h3>
+  <p class="muted">\(p(y_i\mid\lambda)=\lambda(1-\lambda)^{y_i-1}\), \(y_i\in\{1,2,\dots\}\). Choose a prior, compute the posterior.</p>
+  <div class="tile">
+    <p><b>Likelihood.</b> \(p(D\mid\lambda)=\prod_i\lambda(1-\lambda)^{y_i-1}=\lambda^{n}(1-\lambda)^{S-n}\), with \(S=\sum_i y_i\).</p>
+    <p><b>Prior.</b> \(\lambda\in(0,1)\) is a probability, so choose \(\mathrm{Beta}(a,b)\propto\lambda^{a-1}(1-\lambda)^{b-1}\).</p>
+    \[p(\lambda\mid D)\propto\lambda^{n+a-1}(1-\lambda)^{S-n+b-1}\;\Rightarrow\;\mathrm{Beta}(a+n,\ b+S-n).\]
+    <p style="margin:0">Extras if asked: MLE \(\frac nS\), mean \(\frac{a+n}{a+b+S}\), MAP \(\frac{a+n-1}{a+b+S-2}\).</p>
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>The exponent of \((1-\lambda)\) counts failures: \(S-n\), because each person keeps the promise exactly once.</p></div>
+
+  <h3>Unknown density? Same moves.</h3>
+  <p>Retake 2025 gave a density nobody had seen: the Gompertz lifetime \(f(x\mid\eta)=\eta\,e^{\eta+x-\eta e^{x}}\), \(x\gt0\), with a Gamma(\(a,\lambda\)) prior. Don’t panic. Collect \(\eta\).</p>
+  <div class="tile">
+    <p><b>(a)</b> With \(S=\sum x_i\) and \(T=\sum e^{x_i}\):</p>
+    \[f(D\mid\eta)=\prod_i\eta\,e^{\eta+x_i-\eta e^{x_i}}=\eta^{n}e^{n\eta+S-\eta T}=e^{S}\cdot\eta^{n}e^{-\eta(T-n)}.\]
+    <p><b>(b)</b> Times the prior \(\eta^{a-1}e^{-\lambda\eta}\):</p>
+    \[f(\eta\mid D)\propto\eta^{a+n-1}e^{-\eta(\lambda+T-n)}\;\Rightarrow\;\mathrm{Gamma}(a+n,\ \lambda+T-n).\]
+    <p style="margin:0"><b>(c)</b> With \(n=4,\ S=2,\ T=20,\ a=\lambda=1\): posterior Gamma(5, 17), so \(E[\eta\mid D]=\frac{5}{17}\approx0.29\). This is what the hint about the Gamma mean points to.</p>
+  </div>
+  <div class="box swap"><span class="lbl">If they change it</span><p>Look at the kernel. \(\theta^{(\dots)}(1-\theta)^{(\dots)}\) means a Beta prior. \(\theta^{(\dots)}e^{-(\dots)\theta}\) means a Gamma prior. Then read the new parameters straight off the exponents.</p></div>
+
+  <h3>Try it: the posterior machine</h3>
+  <p>Pick a model, set the prior, type data. It writes every step the exam wants. Use it to check your own practice answers.</p>
+  <div class="tool" id="pm">
+    <div class="tool-h"><h4>Posterior machine</h4><span>Prior + data → every step</span></div>
+    <div class="fields">
+      <div class="fld wide"><label for="pmModel">Model</label>
+        <select id="pmModel">
+          <option value="pois">Poisson (counts, goals) + Gamma</option>
+          <option value="exp">Exponential (waiting times) + Gamma</option>
+          <option value="bern">Bernoulli (0/1 data) + Beta</option>
+          <option value="binom">Binomial (N trials each) + Beta</option>
+          <option value="geo0">Geometric k ≥ 0 (failures before success) + Beta</option>
+          <option value="geo1">Geometric y ≥ 1 (tries incl. success) + Beta</option>
+          <option value="nb">Negative binomial (r known) + Beta</option>
+        </select></div>
+      <div class="fld"><label for="pmA">Prior a</label><input id="pmA" type="number" step="any" min="0.01" value="2"></div>
+      <div class="fld"><label for="pmB">Prior b</label><input id="pmB" type="number" step="any" min="0.01" value="1"></div>
+      <div class="fld" id="pmNWrap" hidden><label for="pmN" id="pmNLabel">N per observation</label><input id="pmN" type="number" step="1" min="1" value="10"></div>
+      <div class="fld wide"><label for="pmData">Data, separated by commas</label><input id="pmData" type="text" value="3, 1, 4, 2" inputmode="decimal"></div>
+    </div>
+    <div class="err" id="pmErr" hidden></div>
+    <div id="pmPlot"></div>
+    <div class="keys"><span><i style="background:var(--fg-3)"></i>prior</span><span><i style="background:var(--accent)"></i>posterior</span><span><i style="background:var(--red)"></i>MLE</span></div>
+    <div class="out" id="pmOut"></div>
+  </div>
+
+  <div class="done-row"><button class="mark" data-ch="c3" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c4">Next: Predictions and bets →</a></div>
+</section>
+
+<!-- ============ CHAPTER 4 ============ -->
+<section class="chapter" id="c4" style="--seg:var(--p-mid)">
+  <div class="eyebrow"><span class="num">Chapter 4</span><span>12 min · Midterm</span><span class="tag">Good to know</span></div>
+  <h2>Predictions, bets and the two dice.</h2>
+  <p class="lede">After the posterior, the exam asks what happens next: the mean, the MAP, the probability of the next observation, or whether to take a bet.</p>
+
+  <h3>Three estimates, three meanings</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Estimate</th><th>Definition</th><th>Beta(α, β)</th><th>Gamma(α, β)</th></tr>
+    <tr><td><b>MLE</b></td><td>maximises \(p(D\mid\theta)\), data only</td><td colspan="2">from the kernel table (chapter 3)</td></tr>
+    <tr><td><b>MAP</b></td><td>maximises \(p(D\mid\theta)p(\theta)\) = posterior mode</td><td>\(\frac{\alpha-1}{\alpha+\beta-2}\)</td><td>\(\frac{\alpha-1}{\beta}\)</td></tr>
+    <tr><td><b>Posterior mean</b></td><td>\(E[\theta\mid D]\), the average</td><td>\(\frac{\alpha}{\alpha+\beta}\)</td><td>\(\frac{\alpha}{\beta}\)</td></tr>
+  </table></div>
+  <p>As \(n\to\infty\) all three agree: the prior becomes negligible. With a uniform prior, MAP = MLE.</p>
+
+  <h3>Predictive: average, never plug in</h3>
+  <p>The predictive averages the model over every possible \(\theta\), weighted by the posterior. The integral always becomes a ratio of normalising constants.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Model + posterior</th><th>Predictive</th></tr>
+    <tr><td>Bernoulli, Beta(α, β)</td><td>\(P(x=1\mid D)=\frac{\alpha}{\alpha+\beta}\)</td></tr>
+    <tr><td>Geometric \(q(1-q)^k\), Beta(α, β)</td><td>\(p(k\mid D)=\frac{B(\alpha+1,\ \beta+k)}{B(\alpha,\beta)},\quad p(0\mid D)=\frac{\alpha}{\alpha+\beta}\)</td></tr>
+    <tr><td>Binomial (N), Beta(α, β)</td><td>\(p(k\mid D)=\binom Nk\frac{B(\alpha+k,\ \beta+N-k)}{B(\alpha,\beta)}\)</td></tr>
+    <tr><td>Poisson, Gamma(α, β)</td><td>\(p(0\mid D)=\int e^{-\lambda}\mathrm{Gamma}(\lambda\mid\alpha,\beta)d\lambda=\left(\frac{\beta}{\beta+1}\right)^{\alpha}\)</td></tr>
+    <tr><td>Exponential, Gamma(α, β)</td><td>\(P(X\gt t\mid D)=\left(\frac{\beta}{\beta+t}\right)^{\alpha}\)</td></tr>
+    <tr><td>Categorical, Dir(α)</td><td>\(P(x=k\mid D)=\frac{\alpha_k+N_k}{\sum_j\alpha_j+N}\)</td></tr>
+  </table></div>
+  <div class="box ask"><span class="lbl">Final 2025, 3(b)</span><p>COVID infections are geometric \((1-q)^kq\). The posterior is Beta(10, 50). Probability that the next person infects no one?</p></div>
+  <div class="box ans"><span class="lbl">Write this</span><p>\(p(0\mid D)=\int_0^1 q\cdot\mathrm{Beta}(q\mid10,50)\,dq=E[q\mid D]=\frac{10}{10+50}=\frac16.\)</p></div>
+  <details class="sol"><summary>How to get the Poisson \(p(0\mid D)\) in one line<span class="hint">Show</span></summary><div class="in">
+    \[\int_0^\infty e^{-\lambda}\frac{\beta^\alpha}{\Gamma(\alpha)}\lambda^{\alpha-1}e^{-\beta\lambda}d\lambda=\frac{\beta^\alpha}{\Gamma(\alpha)}\cdot\frac{\Gamma(\alpha)}{(\beta+1)^\alpha}=\left(\frac{\beta}{\beta+1}\right)^\alpha.\]
+    <p style="margin:0">The integral is the Gamma integral from the toolbox with \(b\) replaced by \(\beta+1\).</p>
+  </div></details>
+
+  <h3>Should you take the bet?</h3>
+  <p>A bet question is expected value: probability of winning × win, minus probability of losing × loss.</p>
+  <div class="tile">
+    <p><b>Goals.</b> Prior Gamma(1, 1), goals (0, 3, 1, 2). If the next game has no goal you win 50, otherwise you lose 100.</p>
+    <p>Posterior Gamma(1+6, 1+4) = Gamma(7, 5). \(p(0\mid D)=(5/6)^7\approx0.279\).</p>
+    <p>EV \(=50\cdot0.279-100\cdot0.721\approx-58\). <b>Don’t take it.</b></p>
+    <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+    <p><b>Students.</b> Prior belief: 50% AI, 25% maths, 25% data science, e.g. Dir(2, 1, 1). You see 10 AI, 3 maths, 5 data science. Posterior Dir(12, 4, 6).</p>
+    <p>\(P(\text{next is AI})=\frac{12}{22}\approx0.545\). Two AI in a row: \(\frac{12}{22}\cdot\frac{13}{23}\approx0.308\) (update after the first).</p>
+    <p style="margin:0">Win 100 if both are AI, else pay 80: EV \(=100\cdot0.308-80\cdot0.692\approx-24.5\). <b>Don’t take it.</b></p>
+  </div>
+
+  <h3>The two dice (Midterm 2025, Task 2)</h3>
+  <p>Die \(h_1\) has faces 1–4, die \(h_2\) has faces 1–8. You see throws, not the die. Only two hypotheses, so every sum has two terms.</p>
+  <ol class="steps">
+    <li><b>Likelihood.</b> \(p(D\mid h_1)=(1/4)^n\) if all throws are ≤ 4, else 0. \(p(D\mid h_2)=(1/8)^n\).</li>
+    <li><b>Posterior</b> (uniform prior, all ≤ 4): \(p(h_1\mid D)=\frac{(1/4)^n}{(1/4)^n+(1/8)^n}=\frac{2^n}{2^n+1}\). Each fitting throw doubles the odds for the small die: the <b>size principle</b>.</li>
+    <li><b>Model averaging.</b> \(p(x_{n+1}\mid D)=\sum_i p(x_{n+1}\mid h_i)\,p(h_i\mid D)\). For faces 1–4: \(\frac14 w_1+\frac18 w_2\); faces 5–8: \(\frac18 w_2\).</li>
+    <li><b>MAP with a strong prior.</b> \(p(h_1)=10^{-6}\), data {3, 4}: \(h_1\): \(10^{-6}\cdot\frac1{16}\approx6\cdot10^{-8}\); \(h_2\): \(\approx\frac1{64}\approx0.016\). MAP picks \(h_2\), even though \(h_1\) is the MLE.</li>
+    <li><b>Expected next throw</b> after 15 throws all ≤ 4: \(w_1=\frac{2^{15}}{2^{15}+1}\approx1\), so \(E[X\mid D]=2.5\,w_1+4.5\,w_2\approx2.5\).</li>
+  </ol>
+  <div class="box hook"><span class="lbl">Remember</span><p>A factor of 4 from the data cannot beat a factor of a million from the prior. MAP = prior × likelihood, not likelihood alone.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c4" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c5">Next: Priors and small data →</a></div>
+</section>
+
+<!-- ============ CHAPTER 5 ============ -->
+<section class="chapter" id="c5" style="--seg:var(--p-mid)">
+  <div class="eyebrow"><span class="num">Chapter 5</span><span>8 min · Midterm</span><span class="tag must">Must</span></div>
+  <h2>Priors: small data, flat priors, narrow priors.</h2>
+  <p class="lede">A pure reasoning task. Write the posterior parameters first, then ask: who is bigger, the prior numbers or the data numbers?</p>
+
+  <div class="box ask"><span class="lbl">Midterm 2026, 4(a)</span><p>Argue true/false: a Bayesian approach is particularly strong at dealing with small datasets. Give an example.</p></div>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p><b>True.</b> With little data the MLE can be extreme and overconfident. The prior acts like extra pseudo-observations that stabilise the estimate, and the posterior shows how uncertain we still are.</p>
+    <p><b>Example:</b> 3 coin flips, 3 heads. MLE \(\hat\theta=\frac33=1\): tails is “impossible”. With prior Beta(1, 1) the posterior is Beta(4, 1) and \(P(\text{heads})=\frac45\). Heads is likely, tails is still possible.</p>
+  </div>
+  <p>More points you can add: the zero-count (black swan) problem in Naive Bayes; prior knowledge from experts can be built in. Downside: with small data the answer depends a lot on the prior.</p>
+
+  <div class="box ask"><span class="lbl">Midterm 2026, 4(b)</span><p>\(X_i\sim\mathrm{Exp}(\lambda)\), prior \(\lambda\sim\mathrm{Gamma}(\alpha,\beta)\) with prior variance \(10^{10}\) (extremely flat). True or false?</p></div>
+  <p>First the posterior: \(\mathrm{Gamma}(\alpha+n,\ \beta+\sum x_i)\). Huge variance \(\frac{\alpha}{\beta^2}\) means tiny \(\beta\): the prior says “I know almost nothing”.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Statement</th><th>Answer</th><th>Reason</th></tr>
+    <tr><td>The posterior equals the prior, ignoring the data.</td><td><b style="color:var(--red)">False</b></td><td>The posterior depends on \(n\) and \(\sum x_i\). A flat prior has no information, so the data dominates.</td></tr>
+    <tr><td>The posterior variance tends to infinity; inference is impossible.</td><td><b style="color:var(--red)">False</b></td><td>\(\frac{\alpha+n}{(\beta+\sum x_i)^2}\) is finite once there is data, and shrinks as \(n\) grows.</td></tr>
+    <tr><td>For \(n=10^{100}\) the posterior mean ≈ MLE.</td><td><b style="color:var(--green)">True</b></td><td>\(\frac{\alpha+n}{\beta+\sum x_i}\approx\frac{n}{\sum x_i}=\hat\lambda_{\text{MLE}}\).</td></tr>
+    <tr><td>The model is undefined because the prior is not conjugate.</td><td><b style="color:var(--red)">False</b></td><td>Gamma is conjugate to the Exponential. Even a non-conjugate prior gives a valid posterior.</td></tr>
+  </table></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Flat prior: data wins. F, F, T, F. More data: posterior mean → MLE, width → 0.</p></div>
+  <div class="box swap"><span class="lbl">If they change it</span>
+    <p><b>Very narrow prior</b> (tiny variance, e.g. Beta(1000, 1000)): the prior wins for small \(n\). After 5 heads in 5 flips the mean is \(\frac{1005}{2005}\approx0.501\). Only a huge \(n\) moves it.</p>
+    <p><b>Uniform prior:</b> MAP = MLE exactly. <b>Posterior mean vs MAP:</b> different in general (Beta(2, 5): mean \(\frac27\), mode \(\frac15\)).</p>
+  </div>
+  <h4>Recipe for any prior true/false</h4>
+  <ol class="steps">
+    <li>Write the posterior parameters (prior numbers + data counts).</li>
+    <li>Compare sizes: prior numbers vs \(n\) and \(\sum x_i\).</li>
+    <li>Bigger data ⇒ posterior ≈ MLE. Flat prior ⇒ data wins. Narrow prior ⇒ prior wins for small \(n\).</li>
+  </ol>
+
+  <div class="done-row"><button class="mark" data-ch="c5" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c6">Next: Final short questions →</a></div>
+</section>
+
+<!-- ============ CHAPTER 6 ============ -->
+<section class="chapter" id="c6" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 6</span><span>12 min · Final</span><span class="tag must">Must</span></div>
+  <h2>The short theory questions.</h2>
+  <p class="lede">The final opens with eight quick questions worth easy points. Each one has a two-line answer. Read the question, cover the answer, say it out loud, then check.</p>
+
+  <h3>Final 2026, Task 1</h3>
+  <div class="qa"><div class="src">1(a)</div><p class="q">State Bayes’ theorem for densities.</p><div class="a">
+    \[p(x\mid y)=\frac{p(y\mid x)\,p(x)}{p(y)},\qquad p(y)=\int p(y\mid x)\,p(x)\,dx.\]
+    <div class="memo">Flip the condition, times the prior, over the evidence.</div></div></div>
+
+  <div class="qa"><div class="src">1(b)</div><p class="q">Give two modifications of standard linear regression that help against overfitting or sensitivity to outliers.</p><div class="a">
+    <p><b>Ridge regression</b> (penalised least squares), against overfitting: minimise \(\sum_i(y_i-w^Tx_i)^2+\lambda\lVert w\rVert^2\), so \(\hat w=(X^TX+\lambda I)^{-1}X^Ty\). It is the MAP with a Gaussian prior on \(w\).</p>
+    <p><b>Laplace (absolute-loss) regression</b>, against outliers: minimise \(\sum_i|y_i-w^Tx_i|\). It is the MLE with Laplace noise; big errors are not squared.</p>
+    <p class="small muted" style="margin:0">Also accepted: Lasso \(\lambda\lVert w\rVert_1\), Huber loss, Student-t noise.</p>
+    <div class="memo">Penalty on w fights overfitting. Absolute loss fights outliers.</div></div></div>
+
+  <div class="qa"><div class="src">1(c)</div><p class="q">Write down a way to generate \(\theta\) so that its density looks like a spike at 0 on top of a wide bump.</p><div class="a">
+    <p>Spike-and-slab: first flip a coin, then draw from a thin or a wide Gaussian.</p>
+    \[\gamma\sim\mathrm{Ber}(\tfrac12),\qquad\theta\mid\gamma\sim\mathcal N(0,\ \sigma^2v_\gamma),\qquad v_1=0.001\ (\text{spike}),\ v_0=1\ (\text{slab}).\]
+    <div id="plotSpike"></div>
+    <p class="small muted" style="margin:6px 0 0">Used for variable selection: the spike says “this weight is 0”, the slab says “it can be anything”. A two-bump picture at different places is a mixture with different means.</p>
+    <div class="memo">Coin first, then a thin or a fat Gaussian.</div></div></div>
+
+  <div class="qa"><div class="src">1(d)</div><p class="q">Which algorithm fits the weights of logistic regression? Describe the iteration step.</p><div class="a">
+    <p><b>Gradient descent</b> on the negative log-likelihood:</p>
+    \[w_{k+1}=w_k-\eta_k\,g_k,\qquad g_k=\sum_i\big(\mathrm{sigm}(w_k^Tx_i)-y_i\big)x_i.\]
+    <p style="margin:0">Or <b>Newton / IRLS</b>: \(w_{k+1}=w_k-H_k^{-1}g_k\) with \(H=X^TSX\), \(S=\mathrm{diag}(\mu_i(1-\mu_i))\). No closed form exists, so we iterate (chapter 9).</p>
+    <div class="memo">New = old − step × gradient.</div></div></div>
+
+  <div class="qa"><div class="src">1(e)</div><p class="q">In Bayesian linear regression \(y_i=\beta_0+\beta_1x_i+\varepsilon_i\), \(\varepsilon_i\sim\mathcal N(0,\sigma^2)\): which prior is put on \((\beta_0,\beta_1)\), and which class is the posterior?</p><div class="a">
+    <p style="margin:0">Prior: a (bivariate) <b>Gaussian</b>, usually \(\mathcal N(0,\tau^2I)\). Posterior: again a <b>multivariate Gaussian</b>, because the Gaussian prior is conjugate to the Gaussian likelihood.</p>
+    <div class="memo">Gaussian in, Gaussian out.</div></div></div>
+
+  <div class="qa"><div class="src">1(f)</div><p class="q">Zellner’s g-prior \(\beta\mid\sigma^2\sim\mathcal N\big(\mu_\beta,\ g\sigma^2(X^TX)^{-1}\big)\). Compute the posterior. What happens to the mean as \(g\to\infty\)?</p><div class="a">
+    <p>Complete the square (chapter 10 has the steps). Result:</p>
+    \[\beta\mid y\sim\mathcal N\!\left(\frac{g}{1+g}\hat\beta_{\text{OLS}}+\frac{1}{1+g}\mu_\beta,\ \ \frac{g}{1+g}\sigma^2(X^TX)^{-1}\right),\qquad\hat\beta_{\text{OLS}}=(X^TX)^{-1}X^Ty.\]
+    <p style="margin:0">As \(g\to\infty\) the mean tends to \(\hat\beta_{\text{OLS}}\): the prior becomes flat. As \(g\to0\) the mean tends to \(\mu_\beta\): the prior dominates.</p>
+    <div class="memo">g/(1+g) of the data plus 1/(1+g) of the prior.</div></div></div>
+
+  <div class="qa"><div class="src">1(g)</div><p class="q">Duffing oscillator: \(F_i=-kz_i+\alpha z_i^3+n_i\), \(n_i\sim\mathcal N(0,s^2)\), \(k,\alpha\) unknown. Which model estimates \(k\) and \(\alpha\)? Write the MLE.</p><div class="a">
+    <p>The law is <b>linear in the parameters</b>, so use linear regression with basis functions \(z\) and \(z^3\):</p>
+    \[X=\begin{pmatrix}z_1 & z_1^3\\ \vdots & \vdots\\ z_n & z_n^3\end{pmatrix},\quad\beta=\begin{pmatrix}-k\\ \alpha\end{pmatrix},\quad\hat\beta_{\text{MLE}}=(X^TX)^{-1}X^TF.\]
+    <div class="memo">Linear in the parameters, not in z.</div></div></div>
+
+  <div class="qa"><div class="src">1(h)</div><p class="q">What does the mutual information \(I(X,Y)\) describe? How is it used for feature selection in Naive Bayes?</p><div class="a">
+    \[I(X;Y)=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}=\mathrm{KL}\big(p(x,y)\,\Vert\,p(x)p(y)\big).\]
+    <p style="margin:0">It measures how much knowing one variable tells you about the other: how far they are from independent. \(I\ge0\), and \(I=0\) exactly when independent. In NBC: compute \(I(X_j;Y)\) between each feature and the class label, keep the features with the largest values, drop the rest.</p>
+    <div class="memo">Distance from independence.</div></div></div>
+
+  <h3>Also asked in 2025 finals and the retake</h3>
+  <div class="qa"><div class="src">Retake 2025, 1(a) · Final 2025, 1(d)</div><p class="q">Can logistic regression usually be fitted without a computer? Is there an explicit formula for its weights?</p><div class="a"><p style="margin:0"><b>No.</b> Setting the gradient to zero gives \(X^T(\mathrm{sigm}(Xw)-y)=0\). The weights sit inside the sigmoid, so the equation is non-linear and has no closed-form solution. We need an iterative algorithm (gradient descent, Newton, IRLS), which in practice means a computer.</p></div></div>
+  <div class="qa"><div class="src">Final 2025, 1(c)</div><p class="q">Features are independent and Bernoulli; you want a classifier that trains quickly on little data.</p><div class="a"><p style="margin:0">The <b>(Bernoulli) Naive Bayes classifier</b>. It needs only \(C\cdot D\) parameters, each estimated by counting.</p></div></div>
+  <div class="qa"><div class="src">Retake 2025, 1(c)</div><p class="q">Features are correlated and Gaussian, with known, non-identical covariances per class.</p><div class="a"><p style="margin:0"><b>QDA</b> (Gaussian discriminant analysis with a full covariance \(\Sigma_c\) for each class). Not LDA, because the covariances differ. Not Naive Bayes, because the features are correlated.</p></div></div>
+  <div class="qa"><div class="src">Retake 2025, 1(d)</div><p class="q">Which probabilistic model is the foundation of Google’s PageRank?</p><div class="a"><p style="margin:0">A <b>Markov chain</b>: a random surfer jumps from page to page along links. The PageRank of a page is its probability in the stationary distribution of that chain.</p></div></div>
+  <div class="qa"><div class="src">Midterm 2025, 4(d)</div><p class="q">4 Gaussian features; features 1, 3 are correlated, 2, 4 are correlated, no correlation between the groups. Which model captures this?</p><div class="a"><p style="margin:0">A Gaussian per class with a <b>block covariance</b>: full 2×2 blocks for \((x_1,x_3)\) and \((x_2,x_4)\), zeros between the groups. Equivalently \(p(x\mid c)=\mathcal N(x_1,x_3\mid\mu_c^{(13)},\Sigma_c^{(13)})\cdot\mathcal N(x_2,x_4\mid\mu_c^{(24)},\Sigma_c^{(24)})\).</p></div></div>
+
+  <div class="done-row"><button class="mark" data-ch="c6" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c7">Next: Gaussian classifiers →</a></div>
+</section>
+
+<!-- ============ CHAPTER 7 ============ -->
+<section class="chapter" id="c7" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 7</span><span>18 min · Final</span><span class="tag must">Must</span></div>
+  <h2>Gaussian classifiers: QDA and LDA.</h2>
+  <p class="lede">Every final had one: “classify the point \(x\)” with three Gaussian classes. It is pure arithmetic with 2×2 matrices once you know the score.</p>
+
+  <div class="box ask"><span class="lbl">Final 2026, Task 3</span><p>(a) Explain what QDA is short for, what it tries to achieve, and its assumptions. (b) \(\mu_1=(2,0)^T\), \(\mu_2=(0,2)^T\), \(\mu_3=(0,0)^T\), \(\Sigma_1=\begin{pmatrix}2 & 0\\ 0 & 1\end{pmatrix}\), \(\Sigma_2=\begin{pmatrix}1 & 0\\ 0 & 2\end{pmatrix}\), \(\Sigma_3=\begin{pmatrix}3 & 2\\ 2 & 2\end{pmatrix}\). Classify \(x=(1,0)^T\) with equal priors. (c) Give a classifier for non-Gaussian data and its log-likelihood.</p></div>
+
+  <h3>The idea</h3>
+  <p>Each class is a Gaussian cloud with its own centre \(\mu_c\) and shape \(\Sigma_c\). A new point goes to the class whose cloud, weighted by the prior \(\pi_c\), is highest at that point:</p>
+  \[P(y=c\mid x)=\frac{\pi_c\,\mathcal N(x\mid\mu_c,\Sigma_c)}{\sum_{c'}\pi_{c'}\,\mathcal N(x\mid\mu_{c'},\Sigma_{c'})}.\]
+  <p>Take the log and drop the \((2\pi)^{-D/2}\) that every class shares. That gives the score:</p>
+  <div class="box idea"><span class="lbl">The score</span>
+    \[g_c(x)=\log\pi_c-\tfrac12\log|\Sigma_c|-\tfrac12\,d_c^2,\qquad d_c^2=(x-\mu_c)^T\Sigma_c^{-1}(x-\mu_c).\]
+    <p style="margin:0">Largest \(g_c\) wins. \(d_c^2\) is the Mahalanobis distance: distance measured in the class’s own shape.</p>
+  </div>
+
+  <h3>Four models, one formula</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Model</th><th>Assumption on \(\Sigma_c\)</th><th>Decision boundary</th></tr>
+    <tr><td><b>QDA</b></td><td>each class has its own full \(\Sigma_c\)</td><td>quadratic curves</td></tr>
+    <tr><td><b>LDA</b></td><td>all classes share one \(\Sigma\)</td><td>straight lines</td></tr>
+    <tr><td><b>Gaussian Naive Bayes</b></td><td>\(\Sigma_c\) diagonal (features independent given class)</td><td>quadratic, axis-aligned</td></tr>
+    <tr><td><b>Nearest centroid</b></td><td>\(\Sigma=\sigma^2I\), equal priors</td><td>perpendicular bisectors</td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="tile"><svg viewBox="0 0 300 180" class="plot" role="img" aria-label="LDA: two ellipses of the same shape separated by a straight line">
+      <ellipse cx="95" cy="112" rx="58" ry="28" transform="rotate(-24 95 112)" style="fill:color-mix(in srgb,var(--accent) 16%,transparent);stroke:var(--accent);stroke-width:2"/>
+      <ellipse cx="205" cy="68" rx="58" ry="28" transform="rotate(-24 205 68)" style="fill:color-mix(in srgb,var(--p-final) 16%,transparent);stroke:var(--p-final);stroke-width:2"/>
+      <line x1="118" y1="4" x2="182" y2="176" style="stroke:var(--fg);stroke-width:2.2"/>
+    </svg><p class="small" style="margin:6px 0 0"><b>LDA.</b> Same shape in every class, so the boundary is a straight line.</p></div>
+    <div class="tile"><svg viewBox="0 0 300 180" class="plot" role="img" aria-label="QDA: a small round class inside a wide class, boundary is a closed curve">
+      <ellipse cx="185" cy="92" rx="100" ry="66" style="fill:color-mix(in srgb,var(--p-final) 14%,transparent);stroke:var(--p-final);stroke-width:2"/>
+      <ellipse cx="112" cy="92" rx="26" ry="20" style="fill:color-mix(in srgb,var(--accent) 22%,transparent);stroke:var(--accent);stroke-width:2"/>
+      <ellipse cx="108" cy="92" rx="56" ry="46" style="fill:none;stroke:var(--fg);stroke-width:2.2;stroke-dasharray:7 5"/>
+    </svg><p class="small" style="margin:6px 0 0"><b>QDA.</b> Different shapes, so the boundary curves; here it even closes around the tight class.</p></div>
+  </div>
+
+  <h3>(a) The definitions to write</h3>
+  <div class="box ans"><span class="lbl">QDA</span><p><b>Quadratic Discriminant Analysis.</b> Goal: put \(x\) into the class with the highest posterior \(P(y=c\mid x)\propto\pi_c\,\mathcal N(x\mid\mu_c,\Sigma_c)\). Assumption: within each class the data are Gaussian with their own mean \(\mu_c\) and their own covariance \(\Sigma_c\). The boundaries \(g_c=g_{c'}\) are quadratic in \(x\), hence the name.</p></div>
+  <div class="box ans"><span class="lbl">LDA</span><p><b>Linear Discriminant Analysis.</b> Same as QDA, but all classes share one covariance \(\Sigma\). That is the condition for using it. Then \(x^T\Sigma^{-1}x\) and \(\log|\Sigma|\) are the same in every class and cancel, which leaves a score that is linear in \(x\):</p>
+    \[\delta_c(x)=x^T\Sigma^{-1}\mu_c-\tfrac12\mu_c^T\Sigma^{-1}\mu_c+\log\pi_c.\]
+    <p style="margin:0">“Discriminant” = the function that separates (discriminates) the classes. “Linear” = its boundaries are straight lines.</p></div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Same Σ → Linear. Own Σ → Quadratic. Diagonal Σ → Naive.</p></div>
+
+  <h3>(b) Classify a point: the recipe</h3>
+  <ol class="steps">
+    <li>For each class compute \(v=x-\mu_c\).</li>
+    <li>Compute \(|\Sigma_c|=ad-b^2\) and \(\Sigma_c^{-1}=\frac{1}{ad-b^2}\begin{pmatrix}d & -b\\ -b & a\end{pmatrix}\).</li>
+    <li>Compute \(d_c^2=v^T\Sigma_c^{-1}v\). For a symmetric matrix: \(a'v_1^2+2b'v_1v_2+d'v_2^2\).</li>
+    <li>Score \(g_c=\log\pi_c-\frac12\log|\Sigma_c|-\frac12d_c^2\). Largest wins.</li>
+    <li>If asked for probabilities: \(P(c\mid x)=e^{g_c}/\sum_{c'}e^{g_{c'}}\).</li>
+  </ol>
+  <div class="box hook"><span class="lbl">Shortcut</span><p>Equal priors and equal determinants: just pick the <b>smallest</b> \(d^2\). Equal \(d^2\) and equal determinants: the <b>prior</b> decides.</p></div>
+
+  <h4>Worked: Final 2026, 3(b)</h4>
+  <p>\(|\Sigma_1|=|\Sigma_2|=2\), \(|\Sigma_3|=6-4=2\). All equal, priors equal, so compare \(d^2\) only. \(\Sigma_1^{-1}=\mathrm{diag}(\frac12,1)\), \(\Sigma_2^{-1}=\mathrm{diag}(1,\frac12)\), \(\Sigma_3^{-1}=\frac12\begin{pmatrix}2 & -2\\ -2 & 3\end{pmatrix}=\begin{pmatrix}1 & -1\\ -1 & 1.5\end{pmatrix}\).</p>
+  <div class="tw"><table class="t">
+    <tr><th>Class</th><th>\(x-\mu_c\)</th><th class="num">\(d_c^2\)</th><th class="num">\(g_c\) (drop common terms)</th></tr>
+    <tr class="win"><td>1</td><td>\((-1,0)\)</td><td class="num">\(\frac12\cdot1=0.5\)</td><td class="num">−0.25</td></tr>
+    <tr><td>2</td><td>\((1,-2)\)</td><td class="num">\(1+\frac12\cdot4=3\)</td><td class="num">−1.5</td></tr>
+    <tr><td>3</td><td>\((1,0)\)</td><td class="num">\(1\)</td><td class="num">−0.5</td></tr>
+  </table></div>
+  <p><b>Class 1.</b> Posteriors \(\approx0.48,\ 0.14,\ 0.38\).</p>
+
+  <details class="sol"><summary>Drill: Final 2025, 2(c)<span class="hint">Show answer</span></summary><div class="in">
+    <p>\(\mu_1=(3,0)\), \(\mu_2=(0,3)\), \(\mu_3=(0,0)\); \(\Sigma_1=\Sigma_2=I\), \(\Sigma_3=\begin{pmatrix}2 & 1\\ 1 & 1\end{pmatrix}\); \(x=(1,1)\); equal priors.</p>
+    <p>\(|\Sigma_3|=2-1=1\), so all determinants are 1. \(\Sigma_3^{-1}=\begin{pmatrix}1 & -1\\ -1 & 2\end{pmatrix}\).</p>
+    <p>\(d_1^2=(-2)^2+1^2=5\), \(d_2^2=1+(-2)^2=5\), \(d_3^2=1-2+2=1\). <b>Class 3.</b></p>
+  </div></details>
+  <details class="sol"><summary>Drill: Retake 2025, 2(c)<span class="hint">Show answer</span></summary><div class="in">
+    <p>\(\mu_1=(1,0)\), \(\mu_2=(0,1)\), \(\mu_3=(0,0)\); \(\Sigma_1=\Sigma_2=I\), \(\Sigma_3=\begin{pmatrix}5 & 3\\ 3 & 2\end{pmatrix}\); \(x=(1,1)\); priors \(\frac14,\frac14,\frac12\).</p>
+    <p>\(|\Sigma_3|=10-9=1\), \(\Sigma_3^{-1}=\begin{pmatrix}2 & -3\\ -3 & 5\end{pmatrix}\). \(d_1^2=0+1=1\), \(d_2^2=1+0=1\), \(d_3^2=2-6+5=1\).</p>
+    <p>All distances and determinants are equal, so the prior decides: <b>class 3</b> (prior \(\frac12\)). The exam was built to test exactly this.</p>
+  </div></details>
+
+  <div class="tool" id="qda">
+    <div class="tool-h"><h4>QDA calculator</h4><span>3 classes · 2 features · every step</span></div>
+    <div class="chips" id="qdaPresets" role="group" aria-label="Load an exam">
+      <button class="chip on" data-p="f26">Final 2026</button>
+      <button class="chip" data-p="f25">Final 2025</button>
+      <button class="chip" data-p="r25">Retake 2025</button>
+      <button class="chip" data-p="mock">Mock final</button>
+    </div>
+    <div class="cls-grid" id="qdaClasses"></div>
+    <div class="fields" style="grid-template-columns:repeat(2,minmax(0,1fr));max-width:320px">
+      <div class="fld"><label for="qx1">Point x₁</label><input id="qx1" type="number" step="any" value="1"></div>
+      <div class="fld"><label for="qx2">Point x₂</label><input id="qx2" type="number" step="any" value="0"></div>
+    </div>
+    <div class="out" id="qdaOut"></div>
+  </div>
+
+  <h3>Estimating the parameters (MLE)</h3>
+  <p>\(\hat\pi_c=\frac{N_c}{N}\), \(\hat\mu_c=\frac{1}{N_c}\sum_{i\in c}x_i\) (class average), QDA: \(\hat\Sigma_c=\frac1{N_c}\sum_{i\in c}(x_i-\hat\mu_c)(x_i-\hat\mu_c)^T\). LDA pools all classes into one \(\hat\Sigma\) and divides by \(N\).</p>
+
+  <h4>Worked in 1D: cats vs dogs (Retake 2025, Task 5)</h4>
+  <p class="muted">Running times: cats 7, 9, 11, 13; dogs 10, 12. \(p(x\mid h)=\mathcal N(\mu_h,\sigma_h^2)\). Classify \(x=10\). Hints: \(\sqrt5\approx2.24\), \(\sqrt e\approx1.65\).</p>
+  <div class="tile">
+    <p><b>(a) MLE.</b> Cats: \(\mu_C=10\), \(\sigma_C^2=\frac{9+1+1+9}{4}=5\). Dogs: \(\mu_D=11\), \(\sigma_D^2=\frac{1+1}{2}=1\). Priors \(\pi_C=\frac46,\ \pi_D=\frac26\).</p>
+    <p><b>(b) Classify 10.</b> Compare \(\pi_h\,\mathcal N(10\mid\mu_h,\sigma_h^2)\); the \(\frac{1}{\sqrt{2\pi}}\) is common, drop it:</p>
+    \[\text{cat: }\frac23\cdot\frac{1}{\sqrt5}\,e^{0}\approx\frac{0.667}{2.24}\approx0.298,\qquad\text{dog: }\frac13\cdot\frac{1}{1}\,e^{-1/2}\approx\frac{0.333}{1.65}\approx0.202.\]
+    <p style="margin:0"><b>Cat</b>, with posterior \(\frac{0.298}{0.500}\approx0.60\).</p>
+  </div>
+
+  <h3>(c) A classifier for non-Gaussian data</h3>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p><b>Logistic regression.</b> It models \(P(y=1\mid x)\) directly and makes no assumption on how \(x\) is distributed:</p>
+    \[p_i=P(y_i=1\mid x_i)=\frac{1}{1+e^{-x_i^T\beta}},\qquad LL(\beta)=\sum_{i=1}^n\Big[y_i\log p_i+(1-y_i)\log(1-p_i)\Big].\]
+  </div>
+  <div class="box swap"><span class="lbl">If they change it</span><p><b>Unequal priors:</b> keep \(\log\pi_c\). <b>Unequal determinants:</b> keep \(-\frac12\log|\Sigma_c|\). <b>LDA version:</b> one shared \(\Sigma\), use \(\delta_c\) above. <b>Gaussian NB version:</b> keep only the diagonals of each \(\Sigma_c\).</p></div>
+  <div class="box trap"><span class="lbl">Trap</span><p>\(d^2\) is never negative; if you get a negative number, the inverse is wrong. Check \(\Sigma\Sigma^{-1}=I\) on one entry.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c7" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c8">Next: Naive Bayes →</a></div>
+</section>
+
+<!-- ============ CHAPTER 8 ============ -->
+<section class="chapter" id="c8" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 8</span><span>12 min · Final</span><span class="tag must">Must</span></div>
+  <h2>Naive Bayes: count, multiply, compare.</h2>
+  <p class="lede">The naive assumption: given the class, the features are independent. That turns every classification into a product of simple counts.</p>
+
+  <div class="box ask"><span class="lbl">Asked</span><p><b>Final 2025, 5:</b> pass/fail from attendance and homework data: write the NBC, fit by MLE, classify (0, 1), explain the Bayes approach.<br><b>Final 2026, 4:</b> given estimated probabilities, classify (1, 1, 0); explain priors for small data; give the conjugate priors on \(\theta\) and \(\pi\).</p></div>
+
+  <h3>The model</h3>
+  \[P(y=c\mid x)\ \propto\ \pi_c\prod_{j=1}^{D}\theta_{jc}^{\,x_j}(1-\theta_{jc})^{1-x_j},\qquad\hat\pi_c=\frac{N_c}{N},\quad\hat\theta_{jc}=\frac{N_{jc}}{N_c}.\]
+  <p>\(\theta_{jc}\) = probability that feature \(j\) is 1 in class \(c\). \(N_c\) = number of points in class \(c\). \(N_{jc}\) = how many of them have feature \(j\) equal to 1.</p>
+  <ol class="steps">
+    <li><b>Count.</b> Sort the data by class. Count \(N_c\) and \(N_{jc}\).</li>
+    <li><b>Table.</b> For the new point use \(\theta\) where the feature is 1, and \(1-\theta\) where it is 0.</li>
+    <li><b>Multiply</b> the factors and the prior \(\pi_c\).</li>
+    <li><b>Compare</b> (and normalise if probabilities are asked).</li>
+  </ol>
+
+  <h4>Worked: Final 2025, Task 5</h4>
+  <p class="muted">Data (class, attendance, homework): (F,1,1), (F,0,0), (P,1,1), (P,1,0), (F,0,1), (F,1,0), (P,1,1). Classify (0, 1).</p>
+  <div class="tw"><table class="t">
+    <tr><th>Class</th><th class="num">\(\hat\pi_c\)</th><th class="num">\(\hat\theta_{\text{att}}\)</th><th class="num">\(\hat\theta_{\text{hw}}\)</th><th>Score for (0, 1)</th></tr>
+    <tr><td>Pass (3 points)</td><td class="num">3/7</td><td class="num">3/3 = 1</td><td class="num">2/3</td><td>\(\frac37\cdot(1-1)\cdot\frac23=0\)</td></tr>
+    <tr class="win"><td>Fail (4 points)</td><td class="num">4/7</td><td class="num">2/4</td><td class="num">2/4</td><td>\(\frac47\cdot\frac12\cdot\frac12=\frac17\)</td></tr>
+  </table></div>
+  <p><b>Fail.</b> Notice why Pass got exactly 0: every passing student attended, so “no attendance” has estimated probability 0. That is the zero-count problem.</p>
+
+  <h4>Worked: Final 2026, 4(a)</h4>
+  <p class="muted">\(\hat\theta_{\text{hw,pass}}=\frac12,\ \hat\theta_{\text{att,pass}}=\frac12,\ \hat\theta_{\text{q,pass}}=0\); \(\hat\theta_{\text{hw,fail}}=0,\ \hat\theta_{\text{att,fail}}=\frac12,\ \hat\theta_{\text{q,fail}}=0\); \(\hat\pi_{\text{pass}}=\frac35\). Classify (1, 1, 0).</p>
+  <div class="tile">
+    <p>Pass: \(\frac35\cdot\frac12\cdot\frac12\cdot(1-0)=\frac{3}{20}\). Fail: \(\frac25\cdot0\cdot\frac12\cdot1=0\).</p>
+    <p style="margin:0"><b>Pass.</b></p>
+  </div>
+
+  <h3>(b) Why priors matter for small data</h3>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p>With small data, some feature never appears in a class, so \(\hat\theta_{jc}=0\) (or 1). One zero kills the whole product: the class gets probability 0 no matter what the other features say, and if every class gets a zero we even get \(\frac00\). This is the <b>zero-count</b> or <b>black swan</b> problem, a form of overfitting.</p>
+    <p>Priors add pseudo-counts and remove the zeros. Conjugate priors: \(\theta_{jc}\sim\mathrm{Beta}(a,b)\) and \(\pi\sim\mathrm{Dir}(\alpha_1,\dots,\alpha_C)\). Posterior means:</p>
+    \[\bar\theta_{jc}=\frac{N_{jc}+a}{N_c+a+b},\qquad\bar\pi_c=\frac{N_c+\alpha_c}{N+\sum_{c'}\alpha_{c'}}\qquad(\text{Laplace: }a=b=\alpha_c=1).\]
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>One zero kills the product. Beta for \(\theta\), Dirichlet for \(\pi\).</p></div>
+  <p>Advantages of the Bayes approach (Final 2025, 5c): no zero probabilities, sensible estimates on small data, uncertainty is kept, prior knowledge can enter, and it still trains fast by counting.</p>
+
+  <h3>Other NBC facts they ask</h3>
+  <ul class="plain">
+    <li><b>Can one feature influence another?</b> No, not within a class: features are conditionally independent given the class. (They can be dependent overall, through the class.)</li>
+    <li><b>Danger of MLE with fewer points than \(K\cdot D\)?</b> Many counts are 0, so many \(\hat\theta=0\) or 1: zero probabilities and overfitting.</li>
+    <li><b>Class prior Dir(1, …, 1) after \(N\) observations?</b> Posterior \(\mathrm{Dir}(1+N_1,\dots,1+N_K)\).</li>
+    <li><b>Many features?</b> Add logs instead of multiplying, to avoid numbers too small for the computer (underflow).</li>
+    <li><b>Continuous features?</b> Use a 1D Gaussian per feature and class: Gaussian Naive Bayes (like the cats and dogs in chapter 7).</li>
+  </ul>
+
+  <h3>Mutual information for feature selection</h3>
+  \[I(X_j;Y)=\sum_{x_j,\,c}p(x_j,c)\log\frac{p(x_j,c)}{p(x_j)\,p(c)}.\]
+  <p>Compute it for each feature with the class label. A feature with the same \(\theta\) in every class tells you nothing about the class and has \(I=0\). Keep the top features, drop the ones with small \(I\).</p>
+
+  <div class="done-row"><button class="mark" data-ch="c8" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c9">Next: Logistic regression →</a></div>
+</section>
+
+<!-- ============ CHAPTER 9 ============ -->
+<section class="chapter" id="c9" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 9</span><span>8 min · Final</span><span class="tag must">Must</span></div>
+  <h2>Logistic regression.</h2>
+  <p class="lede">A straight line squeezed through an S-curve so the output is always a probability. The exams ask three things: its log-likelihood, why it has no formula, and how to fit it.</p>
+
+  <h3>The model</h3>
+  \[P(y=1\mid x)=\mu=\mathrm{sigm}(w^Tx)=\frac{1}{1+e^{-w^Tx}}\in(0,1).\]
+  <div class="tile"><div id="plotSigm"></div><div class="keys"><span><i style="background:var(--accent)"></i>sigmoid: stays inside (0, 1)</span><span><i style="background:var(--orange)"></i>OLS line on 0/1 data: leaves [0, 1]</span></div></div>
+
+  <h3>Log-likelihood, gradient, Hessian</h3>
+  \[LL(w)=\sum_i\Big[y_i\log\mu_i+(1-y_i)\log(1-\mu_i)\Big],\qquad\mathrm{NLL}=-LL.\]
+  \[g=\nabla\mathrm{NLL}=\sum_i(\mu_i-y_i)\,x_i=X^T(\mu-y),\qquad H=X^TSX,\ \ S=\mathrm{diag}\big(\mu_i(1-\mu_i)\big).\]
+  <div class="box hook"><span class="lbl">Remember</span><p>Gradient = (prediction − truth) × input.</p></div>
+
+  <h3>Why there is no formula</h3>
+  <p>Set the gradient to zero: \(X^T(\mathrm{sigm}(Xw)-y)=0\). The unknown \(w\) is trapped inside the sigmoid, so the equation is non-linear. Compare linear regression, where \(X^TXw=X^Ty\) is linear and solvable by hand. So we iterate:</p>
+  <div class="tw"><table class="t">
+    <tr><th>Algorithm</th><th>Step</th><th>Needs</th></tr>
+    <tr><td>Gradient (steepest) descent</td><td>\(w_{k+1}=w_k-\eta_k g_k\)</td><td>gradient only; step size \(\eta\)</td></tr>
+    <tr><td>Newton = IRLS</td><td>\(w_{k+1}=w_k-H_k^{-1}g_k\)</td><td>gradient and Hessian (2nd derivatives); few steps</td></tr>
+  </table></div>
+  <p>The NLL is convex, so any minimum the algorithm finds is the global one.</p>
+
+  <h4>One step by hand</h4>
+  <div class="tile">
+    <p>Data \(x_1=(1,2),\ y_1=1\); \(x_2=(-1,1),\ y_2=0\). Start at \(w_0=(0,0)\), so \(\mu_1=\mu_2=\mathrm{sigm}(0)=0.5\).</p>
+    \[g=(0.5-1)(1,2)+(0.5-0)(-1,1)=(-0.5,-1)+(-0.5,0.5)=(-1,\,-0.5).\]
+    <p style="margin:0">Gradient step with \(\eta=1\): \(w_1=w_0-g=(1,\ 0.5)\). The Hessian at \(w_0\) is \(0.25\,X^TX=\begin{pmatrix}0.5 & 0.25\\ 0.25 & 1.25\end{pmatrix}\).</p>
+  </div>
+  <div class="box swap"><span class="lbl">Related facts</span><p>The decision boundary \(w^Tx=0\) is a straight line. It is the discriminative twin of LDA. More than 2 classes: softmax \(P(y=c\mid x)=\frac{e^{\beta_c^Tx}}{\sum_{c'}e^{\beta_{c'}^Tx}}\). The <b>Bernoulli in exponential-family form</b> has natural parameter \(\log\frac{\theta}{1-\theta}\), the logit: that is where the sigmoid comes from.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c9" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c10">Next: Linear regression →</a></div>
+</section>
+
+<!-- ============ CHAPTER 10 ============ -->
+<section class="chapter" id="c10" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 10</span><span>12 min · Final</span><span class="tag must">Must</span></div>
+  <h2>Linear regression and its relatives.</h2>
+  <p class="lede">One model, many variations. The key sentence: Gaussian gives squares, Laplace gives absolute values. On the noise it is the loss; on the weights it is the penalty.</p>
+
+  <div class="box ask"><span class="lbl">Asked</span><p><b>Final 2025, 4:</b> vector outputs? only linear relations? quadratic or absolute loss with outliers? what is ridge? MLE of \(\sigma^2\).<br><b>Final 2026, 1(b, e, f, g)</b> and <b>Retake 2025, 4(a):</b> does standard regression minimise absolute differences?</p></div>
+
+  <h3>The model and its MLE</h3>
+  \[y_i=w^Tx_i+\varepsilon_i,\quad\varepsilon_i\sim\mathcal N(0,\sigma^2)\quad\Rightarrow\quad\hat w=(X^TX)^{-1}X^Ty.\]
+  <p>Maximising the Gaussian likelihood is the same as minimising the residual sum of squares \(\mathrm{RSS}(w)=\sum_i(y_i-w^Tx_i)^2\). So standard linear regression minimises <b>squares</b>, not absolute values (Retake 4a: false).</p>
+
+  <h4>MLE of the noise variance (Final 2025, 4e)</h4>
+  <div class="tile">
+    <p>With \(n\) data points (the \(n\) comes from summing \(n\) copies of \(-\frac12\log\sigma^2\)):</p>
+    \[\ell(\sigma^2)=-\frac n2\log\sigma^2-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-\hat w^Tx_i)^2.\]
+    \[\frac{d\ell}{d\sigma^2}=-\frac{n}{2\sigma^2}+\frac{1}{2\sigma^4}\sum_i(y_i-\hat w^Tx_i)^2=0\;\Rightarrow\;\hat\sigma^2=\frac1n\sum_{i=1}^n(y_i-\hat w^Tx_i)^2=\frac{\mathrm{RSS}}{n}.\]
+    <p class="small muted" style="margin:0">Differentiate with respect to \(\sigma^2\) as one variable. Tip: call it \(v\) while you differentiate.</p>
+  </div>
+
+  <h3>True or false, with reasons</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Statement</th><th>Answer</th><th>Reason</th></tr>
+    <tr><td>Linear regression can predict vector outputs.</td><td><b style="color:var(--green)">True</b></td><td>\(\hat W=(X^TX)^{-1}X^TY\): one regression per output column.</td></tr>
+    <tr><td>It can only model linear relations between \(x\) and \(y\).</td><td><b style="color:var(--red)">False</b></td><td>Linear in \(w\), not in \(x\). Use basis functions \(\phi(x)=(1,x,x^2,\sin x,\dots)\): \(\hat w=(\Phi^T\Phi)^{-1}\Phi^Ty\).</td></tr>
+    <tr><td>Large noise and outliers: use the quadratic loss.</td><td><b style="color:var(--red)">False</b></td><td>Use the absolute loss (Laplace MLE). A square makes big errors huge, so outliers drag the fit.</td></tr>
+  </table></div>
+  <div class="tile"><div id="plotLoss"></div><div class="keys"><span><i style="background:var(--orange)"></i>\(r^2\): Gaussian, explodes on outliers</span><span><i style="background:var(--accent)"></i>\(|r|\): Laplace, grows slowly</span></div></div>
+
+  <h3>Fighting overfitting and outliers</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Method</th><th>Minimises</th><th>Probabilistic view</th><th>Effect</th></tr>
+    <tr><td>Least squares</td><td>\(\sum r_i^2\)</td><td>Gaussian noise, MLE</td><td>closed form</td></tr>
+    <tr><td>Robust (Laplace)</td><td>\(\sum|r_i|\)</td><td>Laplace noise, MLE</td><td>ignores outliers better</td></tr>
+    <tr><td><b>Ridge</b></td><td>\(\sum r_i^2+\lambda\lVert w\rVert_2^2\)</td><td>Gaussian prior on \(w\), MAP</td><td>shrinks \(w\): \((X^TX+\lambda I)^{-1}X^Ty\)</td></tr>
+    <tr><td>Lasso</td><td>\(\sum r_i^2+\lambda\lVert w\rVert_1\)</td><td>Laplace prior on \(w\), MAP</td><td>sets some weights exactly to 0</td></tr>
+  </table></div>
+  <div class="box ans"><span class="lbl">Final 2025, 4(d): explain ridge regression</span><p>Ridge (penalised least squares) adds a penalty on the size of the weights: minimise \(\sum_i(y_i-w^Tx_i)^2+\lambda\lVert w\rVert^2\). Solution \(\hat w=(X^TX+\lambda I)^{-1}X^Ty\), always invertible for \(\lambda\gt0\). It shrinks the weights towards 0, which reduces overfitting. It equals the MAP estimate with prior \(w\sim\mathcal N(0,\tau^2I)\), \(\lambda=\sigma^2/\tau^2\).</p></div>
+
+  <h3>Bayesian linear regression</h3>
+  <p>Prior \(w\sim\mathcal N(0,\tau^2I)\), Gaussian noise. The posterior is Gaussian:</p>
+  \[\Sigma_N=\Big(\tfrac1{\sigma^2}X^TX+\tfrac1{\tau^2}I\Big)^{-1},\qquad\mu_N=\tfrac{1}{\sigma^2}\Sigma_NX^Ty\ \ (=\text{ridge solution}).\]
+  <details class="sol"><summary>Zellner’s g-prior: the derivation in four lines<span class="hint">Show</span></summary><div class="in">
+    <p>Prior \(\beta\sim\mathcal N(\mu_\beta,\ g\sigma^2(X^TX)^{-1})\), likelihood \(y\mid\beta\sim\mathcal N(X\beta,\sigma^2I)\). Collect the terms in \(\beta\) in the exponent as \(-\frac12[\beta^TA\beta-2\beta^Tb]\); then the posterior is \(\mathcal N(A^{-1}b,\ A^{-1})\).</p>
+    \[A=\frac{X^TX}{\sigma^2}+\frac{X^TX}{g\sigma^2}=\frac{1+g}{g}\cdot\frac{X^TX}{\sigma^2},\qquad b=\frac{X^Ty}{\sigma^2}+\frac{X^TX\mu_\beta}{g\sigma^2}.\]
+    \[A^{-1}=\frac{g}{1+g}\sigma^2(X^TX)^{-1},\qquad A^{-1}b=\frac{g}{1+g}(X^TX)^{-1}X^Ty+\frac{1}{1+g}\mu_\beta.\]
+    <p style="margin:0">So the mean is \(\frac{g}{1+g}\hat\beta_{\text{OLS}}+\frac1{1+g}\mu_\beta\). \(g\to\infty\): OLS. \(g\to0\): prior mean. \(g=1\): halfway.</p>
+  </div></details>
+
+  <h3>Any law “number × known function”</h3>
+  <p>Duffing \(F=-kz+\alpha z^3\): columns \(z_i,\ z_i^3\). Drag \(F=c_1v+c_2v^2\): columns \(v_i,\ v_i^2\). \(y=a\sin t+bt^2\): columns \(\sin t_i,\ t_i^2\). Add a column of ones for an intercept. Then \(\hat\beta=(X^TX)^{-1}X^Ty\). Not linear if the parameter sits inside the function, like \(e^{kz}\).</p>
+
+  <h3>Optimisation facts (Retake 2025 true/false)</h3>
+  <ul class="plain">
+    <li>A twice-differentiable \(f\) is <b>convex</b> if \(f''\ge0\) everywhere (curves up). “\(f''\) always negative” describes a concave function: <b>false</b>.</li>
+    <li><b>Newton’s method</b> uses the second derivative (the Hessian). “Convenient because it does not need the second derivative” is <b>false</b>. Gradient descent is the one that needs only the gradient.</li>
+    <li>Least squares is convex, with one global minimum.</li>
+  </ul>
+
+  <div class="done-row"><button class="mark" data-ch="c10" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c11">Next: Text and Markov chains →</a></div>
+</section>
+
+<!-- ============ CHAPTER 11 ============ -->
+<section class="chapter" id="c11" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 11</span><span>8 min · Final</span><span class="tag">Good to know</span></div>
+  <h2>Text models: bag of words and Markov chains.</h2>
+  <p class="lede">Both 2025 finals ended with this task. The bag of words forgets the order. The Markov chain remembers the last word.</p>
+
+  <h3>Bag of words (Final 2025, 6a)</h3>
+  <div class="box ans"><span class="lbl">Write this</span>
+    <p><b>Model:</b> each word is \(x_i\sim\mathrm{Cat}(\theta)\) over \(K\) words, independent. Only counts \(N_k\) matter: \(p(D\mid\theta)=\prod_k\theta_k^{N_k}\).</p>
+    <p><b>Prior:</b> \(\theta\sim\mathrm{Dir}(\alpha_1,\dots,\alpha_K)\). <b>Posterior:</b> \(\mathrm{Dir}(\alpha_1+N_1,\dots,\alpha_K+N_K)\).</p>
+    <p style="margin:0"><b>Next word:</b> \(P(x_{n+1}=k\mid D)=\frac{\alpha_k+N_k}{\sum_j\alpha_j+n}\).</p>
+  </div>
+  <p>Good for document classification (spam), bad for predicting the next word, because it ignores order.</p>
+
+  <h3>Markov chain</h3>
+  <p>The next word depends only on the current word. Parameters: start distribution \(\pi_i=P(X_0=i)\) and transition matrix \(A_{ij}=P(X_{t+1}=j\mid X_t=i)\). Row = from, column = to. Each row sums to 1.</p>
+  <ul class="plain">
+    <li><b>MLE = count and divide:</b> \(\hat\pi_i=\frac{\#\text{sentences starting with }i}{\#\text{sentences}}\), \(\hat A_{ij}=\frac{N_{ij}}{\sum_{j'}N_{ij'}}\).</li>
+    <li><b>One step:</b> read \(A_{ij}\). <b>Two steps:</b> \((A^2)_{ij}=\sum_kA_{ik}A_{kj}\).</li>
+    <li><b>A whole sequence:</b> \(\pi(x_0)\prod_tA_{x_t,x_{t+1}}\). So \(\pi\) and \(A\) give the full distribution (Retake 4f: true).</li>
+  </ul>
+
+  <h4>Worked: Final 2025, 6(c–d)</h4>
+  <p class="muted">Sentences: “I Love Math”, “I Love Love Math”, “Math I Love”.</p>
+  <div class="tile">
+    <p><b>Starts:</b> I, I, Math. \(\pi(I)=\frac23,\ \pi(\text{Love})=0,\ \pi(\text{Math})=\frac13\).</p>
+    <p><b>Transitions</b> (inside sentences only): I→Love ×3; Love→Math ×2; Love→Love ×1; Math→I ×1.</p>
+    <div class="tw" style="box-shadow:none;margin:8px 0"><table class="t">
+      <tr><th>from \ to</th><th class="num">I</th><th class="num">Love</th><th class="num">Math</th></tr>
+      <tr><td>I</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
+      <tr><td>Love</td><td class="num">0</td><td class="num">1/3</td><td class="num">2/3</td></tr>
+      <tr><td>Math</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+    </table></div>
+    <p style="margin:0">\(P(X_1=\text{Math}\mid X_0=I,\hat A)=\hat A_{I,\text{Math}}=0\). A sign of too little data.</p>
+  </div>
+
+  <h4>Worked: weather chain (Retake 2025, Task 6)</h4>
+  <p class="muted">Rows: sunny \((\frac13,\frac13,\frac13)\), cloudy \((\frac12,\frac14,\frac14)\), rainy \((0,\frac12,\frac12)\). Order: sunny, cloudy, rainy.</p>
+  <div class="grid2">
+    <div class="tile"><div id="markovSvg"></div><p class="small muted" style="margin:6px 0 0">(a) The graph. There is no arrow rainy → sunny: probability 0.</p></div>
+    <div class="tile">
+      <p><b>(b) Rainy today, cloudy in two days:</b></p>
+      \[(A^2)_{R,C}=\underbrace{0\cdot\tfrac13}_{R\to S\to C}+\underbrace{\tfrac12\cdot\tfrac14}_{R\to C\to C}+\underbrace{\tfrac12\cdot\tfrac12}_{R\to R\to C}=\tfrac18+\tfrac14=\tfrac38.\]
+      <p style="margin:0"><b>(c) Flaw:</b> rainy → sunny is 0, so after rain the sun can never come directly: an artefact of a small sample. <b>Fix:</b> a Dirichlet prior on each row (add-one smoothing) \(\hat A_{ij}=\frac{N_{ij}+1}{N_{i\cdot}+K}\).</p>
+    </div>
+  </div>
+  <div class="box hook"><span class="lbl">Remember</span><p>Bag forgets the order; Markov remembers the last word. Row = from, column = to. Zeros in \(A\) from small data: smooth them.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c11" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c12">Next: Gaussian extras →</a></div>
+</section>
+
+<!-- ============ CHAPTER 12 ============ -->
+<section class="chapter" id="c12" style="--seg:var(--p-final)">
+  <div class="eyebrow"><span class="num">Chapter 12</span><span>5 min · Final</span><span class="tag">Good to know</span></div>
+  <h2>Gaussian extras.</h2>
+  <p class="lede">Smaller lecture topics that can appear as a true/false or a one-line question.</p>
+
+  <h3>Linear transformations</h3>
+  <p>If \(X\sim\mathcal N(\mu,\Sigma)\), then \(Y=AX+b\sim\mathcal N(A\mu+b,\ A\Sigma A^T)\).</p>
+  <p class="small">Example: \(X,Y\) independent \(\mathcal N(0,1)\). \((X+Y,X-Y)\) has covariance \(\begin{pmatrix}2 & 0\\ 0 & 2\end{pmatrix}\). \((X+Y,X+2Y)\) has covariance \(\begin{pmatrix}2 & 3\\ 3 & 5\end{pmatrix}\).</p>
+
+  <h3>Marginals and conditionals</h3>
+  <p>Split \(x=(x_1,x_2)\). The marginal of \(x_1\) is \(\mathcal N(\mu_1,\Sigma_{11})\): just read the block. The conditional is Gaussian too:</p>
+  \[x_1\mid x_2\sim\mathcal N\big(\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2),\ \ \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\big).\]
+
+  <h3>Learning a Gaussian mean (known \(\sigma^2\))</h3>
+  <p>Prior \(\mu\sim\mathcal N(\mu_0,\tau_0^2)\), \(n\) data with average \(\bar x\). Precisions (1 / variance) add, and the mean is a precision-weighted average:</p>
+  \[\frac1{\tau_n^2}=\frac1{\tau_0^2}+\frac{n}{\sigma^2},\qquad\mu_n=\tau_n^2\Big(\frac{\mu_0}{\tau_0^2}+\frac{n\bar x}{\sigma^2}\Big).\]
+  <p>This is the same idea as sensor fusion: a more reliable measurement gets more weight.</p>
+
+  <h3>Gaussian interpolation (Retake 2025, 4d)</h3>
+  <p>The lecture puts a smoothness prior on the unknown function values that penalises second differences \(x_j-2x_{j+1}+x_{j+2}\) (curvature). With noise-free data the posterior mean passes exactly through the data points and, among all such curves, has the smallest total squared curvature. It is a smooth curve, not a set of straight lines. The uncertainty is 0 at the data points and grows between them.</p>
+  <div class="box ans"><span class="lbl">Answer to the true/false</span><p>“The result is straight lines between data points”: <b>false</b>. The curvature prior gives a smooth curve through the points. With noisy data the curve no longer passes exactly through them.</p></div>
+
+  <div class="done-row"><button class="mark" data-ch="c12" aria-pressed="false"><span class="ck"></span>Mark as learned</button><a class="nx" href="#c13">Next: True/false trainer →</a></div>
+</section>
+
+<!-- ============ CHAPTER 13 ============ -->
+<section class="chapter" id="c13" style="--seg:var(--p-prac)">
+  <div class="eyebrow"><span class="num">Chapter 13</span><span>8 min · Practice</span><span class="tag must">Must</span></div>
+  <h2>True or false? Train the reflex.</h2>
+  <p class="lede">Every exam has true/false with a justification. The recipe: circle the answer, give one reason, add a formula or a counterexample. Pick an answer on each card, then read the reason.</p>
+  <div class="tf-top">
+    <div class="score" id="tfScore">0 <small>of 0 answered · 40 statements</small></div>
+    <div style="display:flex;gap:8px"><button class="btn soft sm" id="tfShuffle">Shuffle</button><button class="btn soft sm" id="tfReset">Start over</button></div>
+  </div>
+  <div id="tfList"></div>
+  <div class="done-row"><button class="mark" data-ch="c13" aria-pressed="false"><span class="ck"></span>Mark as done</button><a class="nx" href="#c14">Next: Mock midterm →</a></div>
+</section>
+
+<!-- ============ CHAPTER 14 ============ -->
+<section class="chapter" id="c14" style="--seg:var(--p-prac)">
+  <div class="eyebrow"><span class="num">Chapter 14</span><span>10 min · Practice</span><span class="tag must">Must</span></div>
+  <h2>Mock midterm retake.</h2>
+  <p class="lede">Same structure as April 2026, new numbers. For each part, say the first step out loud before you open the solution. That is exactly the skill the exam tests.</p>
+
+  <h3>Task 1 · Warm-up</h3>
+  <p class="q">(a) Define the Gamma distribution by its density. Give the range of values and of the parameters.</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p style="margin:0">\(p(\lambda\mid a,b)=\frac{b^a}{\Gamma(a)}\lambda^{a-1}e^{-b\lambda}\) for \(\lambda\gt0\) (and 0 otherwise), with \(a\gt0,\ b\gt0\). Mean \(\frac ab\).</p>
+  </div></details>
+  <p class="q">(b) A fair die has four sides {A, B, C, D}. It is rolled twice. What is the probability that A occurs twice, given that A occurred at least once?</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p style="margin:0">16 outcomes. \(P(AA)=\frac1{16}\). \(P(\text{at least one A})=1-(\frac34)^2=\frac7{16}\). Answer \(\frac{1/16}{7/16}=\frac17\). Check with the formula \(\frac1{2m-1}=\frac17\).</p>
+  </div></details>
+  <p class="q">(c) Let \(X\sim\mathrm{Exp}(\lambda)\). Show \(P(X\gt t)=e^{-\lambda t}\) and compute \(P(X\gt s+t\mid X\gt s)\).</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p>\(P(X\gt t)=\int_t^\infty\lambda e^{-\lambda x}dx=\big[-e^{-\lambda x}\big]_t^\infty=e^{-\lambda t}\).</p>
+    <p style="margin:0">\(\{X\gt s+t\}\subseteq\{X\gt s\}\), so \(P(X\gt s+t\mid X\gt s)=\frac{e^{-\lambda(s+t)}}{e^{-\lambda s}}=e^{-\lambda t}\). It does not depend on \(s\): memoryless.</p>
+  </div></details>
+
+  <h3>Task 2 · Binomial + Beta</h3>
+  <p>Every day \(N=10\) people visit a shop; \(k_i\) of them buy. \(f(k\mid\theta)=\binom{N}{k}\theta^k(1-\theta)^{N-k}\). Data \(D=\{k_1,\dots,k_n\}\).</p>
+  <p class="q">(a) MLE of \(\theta\). (b) Posterior with prior Beta(a, b). (c) Posterior mean and MAP. (d) Numbers: \(D=\{3,5,4\}\), \(a=b=2\).</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> \(L(\theta)\propto\theta^{S}(1-\theta)^{nN-S}\), \(S=\sum k_i\). \(\ell'=\frac S\theta-\frac{nN-S}{1-\theta}=0\Rightarrow\hat\theta=\frac{S}{nN}\).</p>
+    <p><b>(b)</b> \(\theta^{S}(1-\theta)^{nN-S}\cdot\theta^{a-1}(1-\theta)^{b-1}\Rightarrow\mathrm{Beta}(a+S,\ b+nN-S)\).</p>
+    <p><b>(c)</b> Mean \(\frac{a+S}{a+b+nN}\). MAP \(\frac{a+S-1}{a+b+nN-2}\).</p>
+    <p style="margin:0"><b>(d)</b> \(S=12,\ nN=30\). MLE \(0.4\). Posterior Beta(14, 20). Mean \(\frac{14}{34}\approx0.412\). MAP \(\frac{13}{32}\approx0.406\). Probability the next visitor buys = posterior mean \(\approx0.412\).</p>
+  </div></details>
+
+  <h3>Task 3 · Exponential + Gamma</h3>
+  <p>Minutes between buses: \(p(x\mid\lambda)=\lambda e^{-\lambda x}\). Prior Gamma(a, b).</p>
+  <p class="q">(a) Show \(p(D\mid\lambda)\propto\lambda^ne^{-\lambda T}\) with \(T=\sum x_i\); what is the constant? (b) Posterior. (c) Prior mode for \(a\gt1\). (d) MAP. (e) Numbers: \(a=2,\ b=4\), \(D=\{1,3,2,2\}\). (f) Probability the next wait is longer than 2 minutes.</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> \(\prod_i\lambda e^{-\lambda x_i}=\lambda^ne^{-\lambda T}\). It is an equality: the constant is 1.</p>
+    <p><b>(b)</b> \(\lambda^{n}e^{-\lambda T}\lambda^{a-1}e^{-b\lambda}\Rightarrow\mathrm{Gamma}(a+n,\ b+T)\).</p>
+    <p><b>(c)</b> \(\frac{d}{d\lambda}[(a-1)\log\lambda-b\lambda]=0\Rightarrow\frac{a-1}{b}\). <b>(d)</b> \(\hat\lambda_{\text{MAP}}=\frac{a+n-1}{b+T}\).</p>
+    <p><b>(e)</b> \(n=4,\ T=8\). Posterior Gamma(6, 12). MLE \(\frac48=0.5\). MAP \(\frac5{12}\approx0.417\). Mean \(\frac6{12}=0.5\). Prior mode \(\frac14\).</p>
+    <p style="margin:0"><b>(f)</b> \(\int_0^\infty e^{-2\lambda}\,\mathrm{Gamma}(\lambda\mid6,12)\,d\lambda=\left(\frac{12}{12+2}\right)^6=\left(\frac67\right)^6\approx0.397\).</p>
+  </div></details>
+
+  <h3>Task 4 · Priors</h3>
+  <p class="q">(a) Explain MLE, MAP and posterior mean in one sentence each. When do they agree?</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p style="margin:0">MLE: the \(\theta\) that makes the data most likely (data only). MAP: the peak of the posterior (data and prior). Posterior mean: the average of the posterior. MAP = MLE with a uniform prior; all three agree as \(n\to\infty\).</p>
+  </div></details>
+  <p class="q">(b) A coin gets the prior Beta(1000, 1000). True or false? (1) After 5 flips, all heads, the posterior mean is still about 0.5. (2) The prior says “I am almost sure the coin is fair.” (3) After \(10^8\) flips the posterior mean ≈ MLE. (4) MAP = MLE for this prior.</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p style="margin:0">(1) <b>True:</b> Beta(1005, 1000), mean \(\approx0.501\). (2) <b>True:</b> tiny variance around 0.5. (3) <b>True:</b> \(10^8\gg2000\), data dominates. (4) <b>False:</b> only a uniform prior Beta(1, 1) gives MAP = MLE.</p>
+  </div></details>
+
+  <div class="done-row"><button class="mark" data-ch="c14" aria-pressed="false"><span class="ck"></span>Mark as done</button><a class="nx" href="#c15">Next: Mock final →</a></div>
+</section>
+
+<!-- ============ CHAPTER 15 ============ -->
+<section class="chapter" id="c15" style="--seg:var(--p-prac)">
+  <div class="eyebrow"><span class="num">Chapter 15</span><span>10 min · Practice</span><span class="tag must">Must</span></div>
+  <h2>Mock final retake.</h2>
+  <p class="lede">Same structure as June 2026, with a Markov task added because both 2025 finals had one.</p>
+
+  <h3>Task 1 · Short questions</h3>
+  <p class="q">(a) Write the density of \(\mathcal N(x\mid\mu,\Sigma)\) in \(\mathbb R^D\). (b) Which classifier for correlated Gaussian features with a different covariance per class? (c) Name the algorithm for logistic regression and write one step. (d) A drag law \(F=c_1v+c_2v^2+\varepsilon\): which model, which MLE? (e) Zellner’s g-prior: what happens to the posterior mean as \(g\to0\)?</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p>(a) \(\frac{1}{(2\pi)^{D/2}|\Sigma|^{1/2}}\exp\!\big(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)\big)\). (b) QDA.</p>
+    <p>(c) Gradient descent: \(w_{k+1}=w_k-\eta\sum_i(\mathrm{sigm}(w_k^Tx_i)-y_i)x_i\). Or Newton \(w_{k+1}=w_k-H^{-1}g\).</p>
+    <p style="margin:0">(d) Linear regression with columns \(v_i,\ v_i^2\): \(\hat c=(X^TX)^{-1}X^TF\). (e) The mean \(\frac{g}{1+g}\hat\beta_{\text{OLS}}+\frac1{1+g}\mu_\beta\to\mu_\beta\): the prior dominates.</p>
+  </div></details>
+
+  <h3>Task 2 · An unfamiliar density</h3>
+  <p>\(f(x\mid\eta)=\eta\,x^{\eta-1}\) for \(x\in(0,1)\), \(\eta\gt0\). Let \(T=-\sum_i\log x_i\) (a positive number).</p>
+  <p class="q">(a) Compute \(f(D\mid\eta)\). (b) The MLE. (c) Choose a prior and compute the posterior. (d) Numbers: \(n=4,\ T=2\), prior Gamma(2, 2).</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> \(\prod_i\eta x_i^{\eta-1}=\eta^n\exp\big((\eta-1)\sum\log x_i\big)=\eta^ne^{-(\eta-1)T}=e^{T}\cdot\eta^ne^{-\eta T}\).</p>
+    <p><b>(b)</b> \(\ell=n\log\eta-\eta T+\text{const}\), \(\frac n\eta-T=0\Rightarrow\hat\eta=\frac nT\).</p>
+    <p><b>(c)</b> Kernel \(\eta^{(\dots)}e^{-(\dots)\eta}\), so choose Gamma(a, b): posterior \(\mathrm{Gamma}(a+n,\ b+T)\).</p>
+    <p style="margin:0"><b>(d)</b> Gamma(6, 4). Mean \(1.5\), MAP \(\frac54\), MLE \(2\).</p>
+  </div></details>
+
+  <h3>Task 3 · Gaussian classification</h3>
+  <p>\(\mu_1=(1,1)\), \(\mu_2=(-1,0)\), \(\mu_3=(0,2)\); \(\Sigma_1=I\), \(\Sigma_2=\begin{pmatrix}2 & 0\\ 0 & \frac12\end{pmatrix}\), \(\Sigma_3=\begin{pmatrix}2 & 1\\ 1 & 1\end{pmatrix}\); \(x=(0,1)\).</p>
+  <p class="q">(a) What is LDA short for? Can it be used here? (b) Classify \(x\) with equal priors. (c) Classify with priors 0.2, 0.2, 0.6. (d) Write the log-likelihood of logistic regression.</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> Linear Discriminant Analysis. It needs one shared covariance; here the \(\Sigma_c\) differ, so use QDA.</p>
+    <p><b>(b)</b> All determinants are 1 (\(1,\ 2\cdot\frac12,\ 2-1\)). \(\Sigma_2^{-1}=\mathrm{diag}(\frac12,2)\), \(\Sigma_3^{-1}=\begin{pmatrix}1 & -1\\ -1 & 2\end{pmatrix}\).</p>
+    <p>\(d_1^2=(-1)^2+0=1\). \(d_2^2\): \(v=(1,1)\), \(\frac12+2=2.5\). \(d_3^2\): \(v=(0,-1)\), \(2\cdot1=2\). Smallest is class 1: <b>class 1</b>.</p>
+    <p><b>(c)</b> \(g_1=\log0.2-0.5=-2.11\), \(g_2=\log0.2-1.25=-2.86\), \(g_3=\log0.6-1=-1.51\). <b>Class 3</b>: the prior flipped the answer.</p>
+    <p style="margin:0"><b>(d)</b> \(LL(\beta)=\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)]\), \(p_i=\frac1{1+e^{-x_i^T\beta}}\). Load “Mock final” in the QDA calculator to check (b) and (c).</p>
+  </div></details>
+
+  <h3>Task 4 · Naive Bayes</h3>
+  <p>Emails (class, contains “free”, has a link): (S,1,1), (S,1,0), (S,0,1), (H,0,0), (H,1,0), (H,0,0), (H,0,1). S = spam, H = normal.</p>
+  <p class="q">(a) Fit the NBC by MLE. (b) Classify (1, 1) and (0, 0). (c) Redo (1, 1) with Laplace smoothing (Beta(1,1) and Dir(1,1) priors). (d) Why use priors?</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> \(\hat\pi_S=\frac37,\ \hat\pi_H=\frac47\). Spam: \(\hat\theta_{\text{free}}=\frac23,\ \hat\theta_{\text{link}}=\frac23\). Normal: \(\hat\theta_{\text{free}}=\frac14,\ \hat\theta_{\text{link}}=\frac14\).</p>
+    <p><b>(b)</b> (1, 1): S \(\frac37\cdot\frac23\cdot\frac23=\frac4{21}\approx0.190\); H \(\frac47\cdot\frac14\cdot\frac14=\frac1{28}\approx0.036\): <b>spam</b> (\(P\approx0.84\)). (0, 0): S \(\frac37\cdot\frac13\cdot\frac13\approx0.048\); H \(\frac47\cdot\frac34\cdot\frac34\approx0.321\): <b>normal</b>.</p>
+    <p><b>(c)</b> \(\bar\theta_S=\frac{2+1}{3+2}=\frac35\), \(\bar\theta_H=\frac{1+1}{4+2}=\frac13\), \(\bar\pi_S=\frac{3+1}{7+2}=\frac49\). S \(\frac49\cdot\frac9{25}=0.16\); H \(\frac59\cdot\frac19\approx0.062\): still <b>spam</b> (\(P\approx0.72\), less extreme).</p>
+    <p style="margin:0"><b>(d)</b> Small data gives zero counts, and one zero sets the whole class to 0. Priors add pseudo-counts: Beta for \(\theta\), Dirichlet for \(\pi\).</p>
+  </div></details>
+
+  <h3>Task 5 · True or false</h3>
+  <p class="q">(1) Newton’s method needs only the gradient. (2) LDA with a shared covariance gives linear boundaries. (3) Laplace noise leads to minimising the sum of absolute errors. (4) For a Markov chain, \(P(X_2=j\mid X_0=i)=(A_{ij})^2\).</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p style="margin:0">(1) <b>False:</b> it needs the Hessian. (2) <b>True:</b> the quadratic term cancels. (3) <b>True:</b> \(-\log\) of \(e^{-|r|/b}\) is \(|r|/b\). (4) <b>False:</b> it is \((A^2)_{ij}=\sum_kA_{ik}A_{kj}\), the entry of the matrix product.</p>
+  </div></details>
+
+  <h3>Task 6 · Markov chain</h3>
+  <p>Weather sequences: (sun, sun, rain), (rain, sun, sun, sun), (sun, rain, rain).</p>
+  <p class="q">(a) MLE of \(\pi\) and \(A\). (b) \(P(X_2=\text{rain}\mid X_0=\text{sun})\). (c) Probability of the sequence (sun, sun, rain).</p>
+  <details class="sol"><summary>Solution<span class="hint">Show</span></summary><div class="in">
+    <p><b>(a)</b> Starts: sun, rain, sun: \(\pi(\text{sun})=\frac23,\ \pi(\text{rain})=\frac13\). Transitions: sun→sun 3, sun→rain 2, rain→sun 1, rain→rain 1. Rows: sun \((\frac35,\frac25)\), rain \((\frac12,\frac12)\).</p>
+    <p><b>(b)</b> \(\frac35\cdot\frac25+\frac25\cdot\frac12=\frac6{25}+\frac5{25}=\frac{11}{25}=0.44\).</p>
+    <p style="margin:0"><b>(c)</b> \(\pi(\text{sun})\,A_{ss}\,A_{sr}=\frac23\cdot\frac35\cdot\frac25=\frac4{25}=0.16\).</p>
+  </div></details>
+
+  <div class="done-row"><button class="mark" data-ch="c15" aria-pressed="false"><span class="ck"></span>Mark as done</button><a class="nx" href="#c16">Next: Cheat sheet →</a></div>
+</section>
+
+<!-- ============ CHAPTER 16 ============ -->
+<section class="chapter" id="c16" style="--seg:var(--p-prac)">
+  <div class="eyebrow"><span class="num">Chapter 16</span><span>Read right before the exam</span></div>
+  <h2>Cheat sheet.</h2>
+  <p class="lede">Everything on one screen. Read it once more just before you walk in.</p>
+  <div class="cheat"><table>
+    <tr><td>Bayes</td><td>\(p(\theta\mid D)\propto p(D\mid\theta)p(\theta)\); marginal \(\int p(x,y)dy\); conditional \(\frac{p(x,y)}{p(y)}\)</td></tr>
+    <tr><td>MLE</td><td>log, derivative, zero</td></tr>
+    <tr><td>Posterior</td><td>multiply, drop constants, add exponents, recognise</td></tr>
+    <tr><td>Beta(a, b)</td><td>\(\frac{1}{B(a,b)}\theta^{a-1}(1-\theta)^{b-1}\), \(\theta\in[0,1]\); mean \(\frac{a}{a+b}\); mode \(\frac{a-1}{a+b-2}\)</td></tr>
+    <tr><td>Gamma(a, b)</td><td>\(\frac{b^a}{\Gamma(a)}\lambda^{a-1}e^{-b\lambda}\), \(\lambda\gt0\); mean \(\frac ab\); mode \(\frac{a-1}b\); var \(\frac a{b^2}\)</td></tr>
+    <tr><td>Dice</td><td>\(\frac{P(E\cap F)}{P(F)}\); at least once \(1-(1-p)^n\); \(m\) sides, twice given once: \(\frac1{2m-1}\)</td></tr>
+    <tr><td>Memoryless</td><td>\(P(X\ge L)=(1-p)^{L-1}\); \(P(X\ge n+m\mid X\ge n)=(1-p)^m\)</td></tr>
+    <tr><td>Poisson + Gamma</td><td>constant \(\frac1{\prod k_i!}\); Gamma\((a+S,\,b+n)\); MLE \(\frac Sn\); MAP \(\frac{a+S-1}{b+n}\)</td></tr>
+    <tr><td>Exp + Gamma</td><td>Gamma\((a+n,\,b+\sum x_i)\); MLE \(\frac{n}{\sum x_i}\)</td></tr>
+    <tr><td>Neg. bin + Beta</td><td>Beta\((a+nr,\,b+S)\); MLE \(\frac{nr}{nr+S}\); predictive \(\binom{k+r-1}{k}\frac{B(\alpha+r,\beta+k)}{B(\alpha,\beta)}\)</td></tr>
+    <tr><td>Geometric + Beta</td><td>\(k\ge0\): Beta\((a+n,\,b+S)\), \(p(0\mid D)=\frac\alpha{\alpha+\beta}\); \(y\ge1\): Beta\((a+n,\,b+S-n)\)</td></tr>
+    <tr><td>Poisson predictive</td><td>\(p(0\mid D)=\big(\frac{\beta}{\beta+1}\big)^{\alpha}\); bets: expected value</td></tr>
+    <tr><td>Flat prior</td><td>data wins; variance finite; mean → MLE; still conjugate (F, F, T, F)</td></tr>
+    <tr><td>Gaussian</td><td>\((2\pi)^{-D/2}|\Sigma|^{-1/2}\exp(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu))\)</td></tr>
+    <tr><td>QDA score</td><td>\(\log\pi_c-\frac12\log|\Sigma_c|-\frac12d_c^2\); own Σ quadratic, shared Σ linear (LDA)</td></tr>
+    <tr><td>2×2 inverse</td><td>\(\frac1{ad-bc}\begin{pmatrix}d & -b\\ -c & a\end{pmatrix}\); \(v^TAv=av_1^2+2bv_1v_2+dv_2^2\)</td></tr>
+    <tr><td>Naive Bayes</td><td>\(\pi_c\prod_j\theta_{jc}^{x_j}(1-\theta_{jc})^{1-x_j}\); zeros → Beta(θ), Dirichlet(π)</td></tr>
+    <tr><td>Logistic</td><td>\(\mathrm{sigm}(w^Tx)\); \(g=X^T(\mu-y)\); \(w\leftarrow w-\eta g\); Newton \(w-H^{-1}g\); no formula</td></tr>
+    <tr><td>Linear reg.</td><td>\(\hat w=(X^TX)^{-1}X^Ty\); \(\hat\sigma^2=\frac{\mathrm{RSS}}n\); ridge \((X^TX+\lambda I)^{-1}X^Ty\)</td></tr>
+    <tr><td>Robust / sparse</td><td>outliers → \(|r|\) (Laplace noise); Lasso → exact zeros (Laplace prior)</td></tr>
+    <tr><td>g-prior</td><td>mean \(\frac g{1+g}\hat\beta_{\text{OLS}}+\frac1{1+g}\mu_\beta\); \(g\to\infty\): OLS</td></tr>
+    <tr><td>Spike-and-slab</td><td>\(\gamma\sim\mathrm{Ber}(\frac12)\), \(\theta\mid\gamma\sim\mathcal N(0,\sigma^2v_\gamma)\), \(v_1=0.001,\ v_0=1\)</td></tr>
+    <tr><td>Markov</td><td>\(\hat A_{ij}=\frac{N_{ij}}{N_{i\cdot}}\); two steps \(A^2\); zeros → add-one smoothing</td></tr>
+    <tr><td>Bag of words</td><td>Dir\((\alpha+N)\); next word \(\frac{\alpha_k+N_k}{\sum\alpha+n}\)</td></tr>
+    <tr><td>Mutual info</td><td>\(\mathrm{KL}(p(x,y)\Vert p(x)p(y))\); 0 iff independent; drop small-MI features</td></tr>
+  </table></div>
+  <h3>Ten hooks</h3>
+  <div class="hooks">
+    <div>Log, derivative, zero<span>MLE</span></div>
+    <div>Multiply, drop, add, recognise<span>posterior</span></div>
+    <div>a gets successes, b gets failures<span>conjugate update</span></div>
+    <div>Shrink the world, then count<span>conditional probability</span></div>
+    <div>The coin has no memory<span>geometric, exponential</span></div>
+    <div>Flat prior: data wins<span>priors true/false</span></div>
+    <div>Same Σ linear, own Σ quadratic<span>LDA vs QDA</span></div>
+    <div>One zero kills the product<span>Naive Bayes</span></div>
+    <div>New = old − step × gradient<span>logistic regression</span></div>
+    <div>Gaussian squares, Laplace absolutes<span>regression variants</span></div>
+  </div>
+  <div class="done-row"><button class="mark" data-ch="c16" aria-pressed="false"><span class="ck"></span>Mark as read</button><a class="nx" href="#top">Back to the plan ↑</a></div>
+</section>
+
+  </main>
+</div>
+<footer>Built from your files: Midterm 2026, Final 2026, Midterm 2025, Final 2025, Retake 2025, their solution sheets, and the lecture notes (Q. Vogel, 2026). Notation follows the exams. Your progress is saved in this browser only.</footer>
+
+<script>
+(function(){
+"use strict";
+var $ = function(s, r){ return (r||document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function fitMath(root){
+  var els = (root || document).querySelectorAll('mjx-container[jax="SVG"]:not([display="true"])');
+  Array.prototype.forEach.call(els, function(el){
+    if (el.closest('.tw, .cheat')) return;
+    var svg = el.querySelector('svg'), host = el.closest('p, li, td, summary, .facts, .box, .tile, .qa, div');
+    if (!svg || !host) return;
+    var cs = getComputedStyle(host);
+    var avail = host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    el.classList.toggle('mjx-wide', svg.getBoundingClientRect().width > avail - 2);
+  });
+}
+window.__fitMath = fitMath;
+function typeset(el){
+  var M = window.MathJax;
+  if (M && M.startup && M.startup.promise && M.typesetPromise){
+    M.startup.promise = M.startup.promise.then(function(){ return M.typesetPromise([el]); }).then(function(){ fitMath(el); }).catch(function(e){ console.warn(e); });
+  }
+}
+
+/* ---------- chapters, plan, progress ---------- */
+var CH = [
+  {id:'c0', t:'Five moves', part:'Basics', min:8, must:1},
+  {id:'c1', t:'Distributions', part:'Midterm', min:12, must:1},
+  {id:'c2', t:'Probability basics', part:'Midterm', min:12, must:1},
+  {id:'c3', t:'The posterior task', part:'Midterm', min:25, must:1},
+  {id:'c4', t:'Predictions and bets', part:'Midterm', min:12, must:0},
+  {id:'c5', t:'Priors and small data', part:'Midterm', min:8, must:1},
+  {id:'c6', t:'Short theory questions', part:'Final', min:12, must:1},
+  {id:'c7', t:'QDA and LDA', part:'Final', min:18, must:1},
+  {id:'c8', t:'Naive Bayes', part:'Final', min:12, must:1},
+  {id:'c9', t:'Logistic regression', part:'Final', min:8, must:1},
+  {id:'c10', t:'Linear regression', part:'Final', min:12, must:1},
+  {id:'c11', t:'Text and Markov chains', part:'Final', min:8, must:0},
+  {id:'c12', t:'Gaussian extras', part:'Final', min:5, must:0},
+  {id:'c13', t:'True/false trainer', part:'Practice', min:8, must:1},
+  {id:'c14', t:'Mock midterm', part:'Practice', min:10, must:1},
+  {id:'c15', t:'Mock final', part:'Practice', min:10, must:1},
+  {id:'c16', t:'Cheat sheet', part:'Practice', min:0, must:0}
+];
+var PARTCOL = {Basics:'var(--p-basics)', Midterm:'var(--p-mid)', Final:'var(--p-final)', Practice:'var(--p-prac)'};
+var KEY = 'slr-done-v1';
+var done = new Set();
+try { var s0 = localStorage.getItem(KEY); if (s0) done = new Set(JSON.parse(s0)); } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(Array.from(done))); } catch(e) {} }
+function hm(m){ return Math.floor(m/60) + ':' + String(m%60).padStart(2,'0'); }
+function num(id){ return id.slice(1); }
+
+function goTo(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'start'});
+  try { history.replaceState(null, '', '#' + id); } catch(e) {}
+}
+
+// plan bar + list
+var bar = $('#planBar'), list = $('#planList'), t = 0, rows = '';
+CH.forEach(function(c){
+  if (c.min > 0){
+    var b = document.createElement('button');
+    b.type = 'button'; b.style.flexGrow = c.min; b.style.setProperty('--seg', PARTCOL[c.part]);
+    b.dataset.ch = c.id; b.setAttribute('role','listitem');
+    b.setAttribute('aria-label', 'Chapter ' + num(c.id) + ': ' + c.t + ', ' + c.min + ' minutes');
+    b.title = 'Ch ' + num(c.id) + ' · ' + c.t + ' · ' + c.min + ' min';
+    b.textContent = c.min >= 8 ? num(c.id) : '';
+    b.addEventListener('click', function(){ goTo(c.id); });
+    bar.appendChild(b);
+  }
+  var time = c.min > 0 ? hm(t) + '–' + hm(t + c.min) : 'last look';
+  rows += '<a class="prow" data-ch="' + c.id + '" href="#' + c.id + '"><span class="tm">' + time + '</span>' +
+    '<span class="nm"><i class="dot" style="background:' + PARTCOL[c.part] + '"></i>' + num(c.id) + ' · ' + c.t +
+    '<small>' + (c.min ? c.min + ' min' : '') + '</small></span>' +
+    (c.must ? '<span class="tag must">Must</span>' : '<span></span>') + '</a>';
+  t += c.min;
+});
+list.innerHTML = rows;
+
+// toc (sidebar + menu)
+function tocHTML(){
+  var h = '', last = '';
+  CH.forEach(function(c){
+    if (c.part !== last){ h += '<div class="part">' + c.part + '</div>'; last = c.part; }
+    h += '<a href="#' + c.id + '" data-ch="' + c.id + '"><span class="n">' + num(c.id) + '</span><span>' + c.t + '</span><span class="ck"></span></a>';
+  });
+  return h;
+}
+$('#toc').innerHTML = tocHTML();
+$('#tocMenu').innerHTML = tocHTML();
+
+function refresh(){
+  $$('[data-ch]').forEach(function(el){
+    var d = done.has(el.dataset.ch);
+    if (el.classList.contains('mark')) el.setAttribute('aria-pressed', d ? 'true' : 'false');
+    else el.classList.toggle('done', d);
+  });
+  var n = CH.filter(function(c){ return done.has(c.id); }).length;
+  $('#progText').textContent = n + '/' + CH.length + ' done';
+  var C = 56.55;
+  $('#ringFill').setAttribute('stroke-dashoffset', (C * (1 - n / CH.length)).toFixed(2));
+}
+$$('.mark').forEach(function(b){
+  b.addEventListener('click', function(){
+    var id = b.dataset.ch;
+    if (done.has(id)) done.delete(id); else done.add(id);
+    save(); refresh();
+  });
+});
+refresh();
+
+// current chapter highlight
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){
+        $$('.toc a').forEach(function(a){ a.classList.toggle('cur', a.dataset.ch === en.target.id); });
+      }
+    });
+  }, {rootMargin:'-35% 0px -60% 0px'});
+  $$('.chapter').forEach(function(s){ io.observe(s); });
+}
+
+// menu
+var menu = $('#menu'), menuBtn = $('#menuBtn');
+function closeMenu(){ menu.hidden = true; menuBtn.setAttribute('aria-expanded','false'); }
+menuBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  var open = menu.hidden;
+  menu.hidden = !open; menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+menu.addEventListener('click', function(e){ if (e.target.closest('a')) closeMenu(); });
+document.addEventListener('click', function(e){ if (!menu.hidden && !menu.contains(e.target) && e.target !== menuBtn) closeMenu(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+
+/* ---------- quiz mode ---------- */
+var grid = $('#distGrid');
+$('#quizToggle').addEventListener('change', function(e){
+  grid.classList.toggle('quiz', e.target.checked);
+  $$('.dist', grid).forEach(function(d){ d.classList.remove('show'); });
+});
+$$('.dist', grid).forEach(function(d){
+  d.addEventListener('click', function(){ if (grid.classList.contains('quiz')) d.classList.toggle('show'); });
+});
+
+/* ---------- math helpers ---------- */
+var LC = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+function lgamma(z){
+  if (z < 0.5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * z))) - lgamma(1 - z);
+  z -= 1; var x = LC[0];
+  for (var i = 1; i < 9; i++) x += LC[i] / (z + i);
+  var tt = z + 7.5;
+  return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(tt) - tt + Math.log(x);
+}
+function lbeta(a, b){ return lgamma(a) + lgamma(b) - lgamma(a + b); }
+function betaPdf(x, a, b){ if (x <= 0 || x >= 1) return NaN; return Math.exp((a-1)*Math.log(x) + (b-1)*Math.log(1-x) - lbeta(a,b)); }
+function gammaPdf(x, a, b){ if (x <= 0) return NaN; return Math.exp(a*Math.log(b) - lgamma(a) + (a-1)*Math.log(x) - b*x); }
+function normPdf(x, m, s){ return Math.exp(-0.5*((x-m)/s)*((x-m)/s)) / (s*Math.sqrt(2*Math.PI)); }
+function fmt(x, d){
+  if (!isFinite(x)) return '\\infty';
+  d = d == null ? 4 : d;
+  var r = Math.round(x * Math.pow(10, d)) / Math.pow(10, d);
+  if (Math.abs(r) < Math.pow(10, -d) && x !== 0) return x.toExponential(2);
+  return String(r);
+}
+function frac(x){
+  for (var den = 1; den <= 24; den++){
+    var nm = Math.round(x * den);
+    if (Math.abs(nm / den - x) < 1e-9){
+      if (den === 1) return String(nm);
+      return (nm < 0 ? '-' : '') + '\\tfrac{' + Math.abs(nm) + '}{' + den + '}';
+    }
+  }
+  return fmt(x, 3);
+}
+function F(n, d){ // exact fraction TeX + decimal
+  if (d === 0) return '\\text{undefined}';
+  var g = function(a, b){ return b ? g(b, a % b) : a; };
+  var isInt = Number.isInteger(n) && Number.isInteger(d);
+  if (isInt){
+    var k = g(Math.abs(n), Math.abs(d)); var nn = n / k, dd = d / k;
+    if (dd === 1) return String(nn);
+    return '\\frac{' + n + '}{' + d + '}' + (k > 1 ? '=\\frac{' + nn + '}{' + dd + '}' : '') + '\\approx ' + fmt(n / d, 3);
+  }
+  return '\\frac{' + fmt(n, 3) + '}{' + fmt(d, 3) + '}\\approx ' + fmt(n / d, 3);
+}
+function niceTicks(max){
+  var raw = max / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+  var step = (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p, out = [];
+  for (var v = 0; v <= max + 1e-9; v += step) out.push(+v.toFixed(6));
+  return out;
+}
+
+/* ---------- plots ---------- */
+function plot(el, o){
+  if (!el) return;
+  var w = Math.max(260, Math.round(el.clientWidth || 520)), h = o.h || 190;
+  var m = {l: o.yLab ? 30 : 10, r: 12, t: 12, b: 26}, W = w - m.l - m.r, H = h - m.t - m.b;
+  var y0 = o.yMin || 0;
+  var sx = function(x){ return m.l + (x - o.xMin) / (o.xMax - o.xMin) * W; };
+  var sy = function(y){ return m.t + H - (Math.max(y0, Math.min(o.yMax, y)) - y0) / (o.yMax - y0) * H; };
+  var s = '<svg class="plot" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + (o.label || 'chart') + '">';
+  (o.xTicks || []).forEach(function(tk){
+    s += '<line class="gridl" x1="' + sx(tk) + '" x2="' + sx(tk) + '" y1="' + m.t + '" y2="' + (m.t + H) + '"/>';
+    s += '<text x="' + sx(tk) + '" y="' + (h - 7) + '" text-anchor="middle">' + String(tk).replace('-', '−') + '</text>';
+  });
+  (o.yLines || []).forEach(function(tk){
+    s += '<line class="gridl" x1="' + m.l + '" x2="' + (m.l + W) + '" y1="' + sy(tk) + '" y2="' + sy(tk) + '"/>';
+    if (o.yLab) s += '<text x="' + (m.l - 6) + '" y="' + (sy(tk) + 4) + '" text-anchor="end">' + tk + '</text>';
+  });
+  s += '<line class="ax" x1="' + m.l + '" x2="' + (m.l + W) + '" y1="' + sy(0) + '" y2="' + sy(0) + '"/>';
+  o.series.forEach(function(se){
+    var N = o.n || 360, d = '', pen = false, pts = [];
+    for (var i = 0; i <= N; i++){
+      var x = o.xMin + (o.xMax - o.xMin) * i / N, y = se.f(x);
+      if (!isFinite(y)){ pen = false; continue; }
+      var X = sx(x).toFixed(1), Y = sy(y).toFixed(1);
+      d += (pen ? 'L' : 'M') + X + ' ' + Y; pen = true; pts.push(X + ' ' + Y);
+    }
+    if (se.area && pts.length){
+      s += '<path class="' + se.area + '" d="M' + pts[0].split(' ')[0] + ' ' + sy(0) + ' L' + pts.join(' L') + ' L' + pts[pts.length-1].split(' ')[0] + ' ' + sy(0) + ' Z"/>';
+    }
+    s += '<path class="' + se.cls + '" d="' + d + '"/>';
+  });
+  (o.marks || []).forEach(function(mk){
+    if (!(mk.x >= o.xMin && mk.x <= o.xMax)) return;
+    var X = sx(mk.x), right = X > w - 80;
+    s += '<line class="mk" x1="' + X + '" x2="' + X + '" y1="' + m.t + '" y2="' + (m.t + H) + '"/>';
+    if (mk.t) s += '<text class="mk-t" x="' + (right ? X - 5 : X + 5) + '" y="' + (m.t + 12) + '" text-anchor="' + (right ? 'end' : 'start') + '">' + mk.t + '</text>';
+  });
+  el.innerHTML = s + '</svg>';
+}
+function staticPlots(){
+  plot($('#plotBeta'), {xMin:0, xMax:1, yMax:2.6, xTicks:[0,0.5,1], label:'Beta densities', series:[
+    {f:function(x){ return betaPdf(x,1,1); }, cls:'s-prior'},
+    {f:function(x){ return betaPdf(x,2,2); }, cls:'s-3'},
+    {f:function(x){ return betaPdf(x,5,2); }, cls:'s-4'}]});
+  plot($('#plotGamma'), {xMin:0, xMax:10, yMax:1.05, xTicks:[0,2,4,6,8,10], label:'Gamma densities', series:[
+    {f:function(x){ return gammaPdf(x,1,1); }, cls:'s-prior'},
+    {f:function(x){ return gammaPdf(x,2,1); }, cls:'s-3'},
+    {f:function(x){ return gammaPdf(x,5,1); }, cls:'s-4'}]});
+  plot($('#plotSpike'), {xMin:-3, xMax:3, yMax:2.1, xTicks:[-2,0,2], h:150, label:'Spike and slab density', n:600, series:[
+    {f:function(x){ return 0.5*normPdf(x,0,0.1) + 0.5*normPdf(x,0,1); }, cls:'s-post', area:'a-post'}]});
+  plot($('#plotSigm'), {xMin:-6, xMax:6, yMin:-0.4, yMax:1.4, yLines:[0,1], yLab:true, xTicks:[-6,-3,0,3,6], label:'Sigmoid versus straight line', series:[
+    {f:function(x){ return 1/(1+Math.exp(-x)); }, cls:'s-post'},
+    {f:function(x){ return 0.5 + 0.12*x; }, cls:'s-4'}]});
+  plot($('#plotLoss'), {xMin:-3, xMax:3, yMax:4, xTicks:[-3,-2,-1,0,1,2,3], label:'Squared versus absolute loss', series:[
+    {f:function(x){ return x*x; }, cls:'s-4'},
+    {f:function(x){ return Math.abs(x); }, cls:'s-post'}]});
+}
+
+/* ---------- Markov graph ---------- */
+function markov(){
+  var el = $('#markovSvg'); if (!el) return;
+  var R = 28, N = {S:{x:78,y:196,l:'Sunny'}, C:{x:190,y:96,l:'Cloudy'}, Ra:{x:302,y:196,l:'Rainy'}};
+  var s = '<svg class="plot" viewBox="0 0 380 270" role="img" aria-label="Weather Markov chain graph">';
+  s += '<defs><marker id="arrM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fg-2)"/></marker></defs>';
+  var lab = function(x, y, txt){ return '<text x="' + x.toFixed(1) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="middle" style="fill:var(--fg);font-weight:600;font-size:12px;paint-order:stroke;stroke:var(--surface);stroke-width:4px">' + txt + '</text>'; };
+  function edge(a, b, bend, txt){
+    var A = N[a], B = N[b], mx = (A.x + B.x)/2, my = (A.y + B.y)/2, dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy);
+    var nx = -dy / L, ny = dx / L, cx = mx + nx * bend, cy = my + ny * bend;
+    var u1 = Math.hypot(cx - A.x, cy - A.y), u2 = Math.hypot(cx - B.x, cy - B.y);
+    var sx = A.x + (cx - A.x) / u1 * R, sy = A.y + (cy - A.y) / u1 * R;
+    var ex = B.x + (cx - B.x) / u2 * (R + 1), ey = B.y + (cy - B.y) / u2 * (R + 1);
+    s += '<path d="M' + sx.toFixed(1) + ' ' + sy.toFixed(1) + ' Q' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + ex.toFixed(1) + ' ' + ey.toFixed(1) + '" style="fill:none;stroke:var(--fg-2);stroke-width:1.6" marker-end="url(#arrM)"/>';
+    s += lab(mx + nx * (bend/2 + 11), my + ny * (bend/2 + 11), txt);
+  }
+  function loop(a, ang, txt){
+    var A = N[a], f = ang * Math.PI / 180, p = function(t, r){ return [A.x + Math.cos(t) * r, A.y + Math.sin(t) * r]; };
+    var s1 = p(f - 0.45, R), e1 = p(f + 0.45, R + 1), c1 = p(f - 0.75, R + 40), c2 = p(f + 0.75, R + 40), lp = p(f, R + 44);
+    s += '<path d="M' + s1[0].toFixed(1) + ' ' + s1[1].toFixed(1) + ' C' + c1[0].toFixed(1) + ' ' + c1[1].toFixed(1) + ' ' + c2[0].toFixed(1) + ' ' + c2[1].toFixed(1) + ' ' + e1[0].toFixed(1) + ' ' + e1[1].toFixed(1) + '" style="fill:none;stroke:var(--fg-2);stroke-width:1.6" marker-end="url(#arrM)"/>';
+    s += lab(lp[0], lp[1], txt);
+  }
+  edge('S','C',20,'1/3'); edge('C','S',20,'1/2');
+  edge('C','Ra',20,'1/4'); edge('Ra','C',20,'1/2');
+  edge('S','Ra',24,'1/3');
+  loop('S',150,'1/3'); loop('C',-90,'1/4'); loop('Ra',30,'1/2');
+  Object.keys(N).forEach(function(k){
+    var n = N[k];
+    s += '<circle cx="' + n.x + '" cy="' + n.y + '" r="' + R + '" style="fill:var(--surface-2);stroke:var(--p-final);stroke-width:2"/>';
+    s += '<text x="' + n.x + '" y="' + (n.y + 4) + '" text-anchor="middle" style="fill:var(--fg);font-size:11.5px;font-weight:600">' + n.l + '</text>';
+  });
+  el.innerHTML = s + '</svg>';
+}
+
+/* ---------- posterior machine ---------- */
+var PM_DEF = {
+  pois: {a:2, b:1, data:'3, 1, 4, 2'},
+  exp: {a:2, b:4, data:'1, 3, 2, 2'},
+  bern: {a:1, b:1, data:'1, 1, 1'},
+  binom: {a:2, b:2, data:'3, 5, 4', N:10},
+  geo0: {a:1, b:1, data:'0, 2, 1, 1'},
+  geo1: {a:1, b:1, data:'3, 1, 4, 2'},
+  nb: {a:1, b:1, data:'1, 3, 2', N:2}
+};
+var pmModel = $('#pmModel'), pmA = $('#pmA'), pmB = $('#pmB'), pmN = $('#pmN'), pmData = $('#pmData');
+function pmLoadDefaults(){
+  var d = PM_DEF[pmModel.value];
+  pmA.value = d.a; pmB.value = d.b; pmData.value = d.data;
+  if (d.N != null) pmN.value = d.N;
+}
+function pmRun(){
+  var mdl = pmModel.value, a = parseFloat(pmA.value), b = parseFloat(pmB.value), Nn = parseInt(pmN.value, 10);
+  var needN = (mdl === 'binom' || mdl === 'nb');
+  $('#pmNWrap').hidden = !needN;
+  $('#pmNLabel').textContent = mdl === 'nb' ? 'r (successes needed)' : 'N trials per observation';
+  var err = $('#pmErr'), out = $('#pmOut');
+  var raw = pmData.value.split(/[\s,;]+/).filter(function(x){ return x !== ''; });
+  var xs = raw.map(Number), n = xs.length;
+  var msg = '';
+  if (!(a > 0) || !(b > 0)) msg = 'Prior a and b must both be positive numbers.';
+  else if (n === 0) msg = 'Type at least one data point, for example 3, 1, 4.';
+  else if (xs.some(function(v){ return !isFinite(v); })) msg = 'Data must be numbers separated by commas.';
+  else if (needN && !(Nn >= 1)) msg = (mdl === 'nb' ? 'r' : 'N') + ' must be a whole number of at least 1.';
+  else if (mdl === 'bern' && xs.some(function(v){ return v !== 0 && v !== 1; })) msg = 'Bernoulli data must be 0 or 1.';
+  else if (mdl === 'binom' && xs.some(function(v){ return !Number.isInteger(v) || v < 0 || v > Nn; })) msg = 'Binomial data must be whole numbers from 0 to N.';
+  else if ((mdl === 'pois' || mdl === 'geo0' || mdl === 'nb') && xs.some(function(v){ return !Number.isInteger(v) || v < 0; })) msg = 'This model needs whole numbers 0, 1, 2, …';
+  else if (mdl === 'geo1' && xs.some(function(v){ return !Number.isInteger(v) || v < 1; })) msg = 'This model needs whole numbers 1, 2, 3, … (the success counts as a try).';
+  else if (mdl === 'exp' && xs.some(function(v){ return !(v > 0); })) msg = 'Waiting times must be positive.';
+  err.hidden = !msg; err.textContent = msg;
+  if (msg){ out.innerHTML = ''; $('#pmPlot').innerHTML = ''; return; }
+
+  var S = xs.reduce(function(s, v){ return s + v; }, 0), Sx = fmt(S, 4);
+  var P, fam, al, be, lik, mle, mleTex, pred, predTex, sym;
+  var A = fmt(a, 4), B = fmt(b, 4);
+  if (mdl === 'pois'){
+    sym = '\\lambda'; fam = 'G'; al = a + S; be = b + n;
+    lik = 'p(D\\mid\\lambda)=\\frac{1}{\\prod_i k_i!}\\,e^{-' + n + '\\lambda}\\lambda^{' + Sx + '}';
+    mle = S / n; mleTex = '\\hat\\lambda=\\frac{S}{n}=' + F(S, n);
+    P = '\\mathrm{Gamma}(a+S,\\ b+n)=\\mathrm{Gamma}(' + A + '+' + Sx + ',\\ ' + B + '+' + n + ')';
+    pred = Math.pow(be / (be + 1), al); predTex = 'p(0\\text{ goals next}\\mid D)=\\left(\\tfrac{\\beta}{\\beta+1}\\right)^{\\alpha}';
+  } else if (mdl === 'exp'){
+    sym = '\\lambda'; fam = 'G'; al = a + n; be = b + S;
+    lik = 'p(D\\mid\\lambda)=\\lambda^{' + n + '}e^{-' + Sx + '\\lambda}';
+    mle = n / S; mleTex = '\\hat\\lambda=\\frac{n}{\\sum x_i}=' + F(n, S);
+    P = '\\mathrm{Gamma}(a+n,\\ b+\\textstyle\\sum x_i)=\\mathrm{Gamma}(' + A + '+' + n + ',\\ ' + B + '+' + Sx + ')';
+    pred = Math.pow(be / (be + 1), al); predTex = 'P(\\text{next wait}\\gt 1\\mid D)=\\left(\\tfrac{\\beta}{\\beta+1}\\right)^{\\alpha}';
+  } else if (mdl === 'bern'){
+    sym = '\\theta'; fam = 'B'; al = a + S; be = b + n - S;
+    lik = 'p(D\\mid\\theta)=\\theta^{' + Sx + '}(1-\\theta)^{' + (n - S) + '}';
+    mle = S / n; mleTex = '\\hat\\theta=\\frac{S}{n}=' + F(S, n);
+    P = '\\mathrm{Beta}(a+S,\\ b+n-S)=\\mathrm{Beta}(' + A + '+' + Sx + ',\\ ' + B + '+' + (n - S) + ')';
+    pred = al / (al + be); predTex = 'P(x_{\\text{new}}=1\\mid D)=\\tfrac{\\alpha}{\\alpha+\\beta}';
+  } else if (mdl === 'binom'){
+    sym = '\\theta'; fam = 'B'; al = a + S; be = b + n * Nn - S;
+    lik = 'p(D\\mid\\theta)\\propto\\theta^{' + Sx + '}(1-\\theta)^{' + (n * Nn - S) + '}';
+    mle = S / (n * Nn); mleTex = '\\hat\\theta=\\frac{S}{nN}=' + F(S, n * Nn);
+    P = '\\mathrm{Beta}(a+S,\\ b+nN-S)=\\mathrm{Beta}(' + A + '+' + Sx + ',\\ ' + B + '+' + (n * Nn - S) + ')';
+    pred = al / (al + be); predTex = 'P(\\text{next single trial succeeds}\\mid D)=\\tfrac{\\alpha}{\\alpha+\\beta}';
+  } else if (mdl === 'geo0'){
+    sym = 'q'; fam = 'B'; al = a + n; be = b + S;
+    lik = 'p(D\\mid q)=q^{' + n + '}(1-q)^{' + Sx + '}';
+    mle = n / (n + S); mleTex = '\\hat q=\\frac{n}{n+S}=' + F(n, n + S);
+    P = '\\mathrm{Beta}(a+n,\\ b+S)=\\mathrm{Beta}(' + A + '+' + n + ',\\ ' + B + '+' + Sx + ')';
+    pred = al / (al + be); predTex = 'p(0\\mid D)=\\tfrac{\\alpha}{\\alpha+\\beta}';
+  } else if (mdl === 'geo1'){
+    sym = '\\lambda'; fam = 'B'; al = a + n; be = b + S - n;
+    lik = 'p(D\\mid\\lambda)=\\lambda^{' + n + '}(1-\\lambda)^{' + (S - n) + '}';
+    mle = n / S; mleTex = '\\hat\\lambda=\\frac{n}{S}=' + F(n, S);
+    P = '\\mathrm{Beta}(a+n,\\ b+S-n)=\\mathrm{Beta}(' + A + '+' + n + ',\\ ' + B + '+' + (S - n) + ')';
+    pred = al / (al + be); predTex = 'p(y=1\\mid D)=\\tfrac{\\alpha}{\\alpha+\\beta}';
+  } else {
+    sym = 'p'; fam = 'B'; al = a + n * Nn; be = b + S;
+    lik = 'f(D\\mid p)\\propto p^{nr}(1-p)^{S}=p^{' + (n * Nn) + '}(1-p)^{' + Sx + '}';
+    mle = (n * Nn) / (n * Nn + S); mleTex = '\\hat p=\\frac{nr}{nr+S}=' + F(n * Nn, n * Nn + S);
+    P = '\\mathrm{Beta}(a+nr,\\ b+S)=\\mathrm{Beta}(' + A + '+' + (n * Nn) + ',\\ ' + B + '+' + Sx + ')';
+    pred = Math.exp(lbeta(al + Nn, be) - lbeta(al, be)); predTex = 'f(0\\mid D)=\\tfrac{B(\\alpha+r,\\ \\beta)}{B(\\alpha,\\beta)}';
+  }
+  var mean, mode, vr, modeTex;
+  if (fam === 'B'){
+    mean = al / (al + be); vr = al * be / ((al + be) * (al + be) * (al + be + 1));
+    mode = (al > 1 && be > 1) ? (al - 1) / (al + be - 2) : null;
+    modeTex = mode == null ? '\\text{MAP at the boundary (}\\alpha\\le1\\text{ or }\\beta\\le1)' : '\\text{MAP}=\\tfrac{\\alpha-1}{\\alpha+\\beta-2}=' + fmt(mode, 4);
+  } else {
+    mean = al / be; vr = al / (be * be);
+    mode = al > 1 ? (al - 1) / be : null;
+    modeTex = mode == null ? '\\text{MAP}=0\\ (\\alpha\\le1)' : '\\text{MAP}=\\tfrac{\\alpha-1}{\\beta}=' + fmt(mode, 4);
+  }
+  var famName = fam === 'B' ? 'Beta' : 'Gamma';
+  var meanTex = fam === 'B' ? '\\tfrac{\\alpha}{\\alpha+\\beta}' : '\\tfrac{\\alpha}{\\beta}';
+  out.innerHTML =
+    '<div class="tw" style="box-shadow:none;background:transparent;margin:0"><table class="t res">' +
+    '<tr><td><b>1</b> Likelihood</td><td>\\(' + lik + '\\)<div class="small muted">n = ' + n + ', S = ' + Sx + '</div></td></tr>' +
+    '<tr><td><b>2</b> MLE</td><td>\\(' + mleTex + '\\)</td></tr>' +
+    '<tr><td><b>3</b> Posterior</td><td>\\(' + P + '=\\mathrm{' + famName + '}(' + fmt(al, 4) + ',\\ ' + fmt(be, 4) + ')\\)</td></tr>' +
+    '<tr><td><b>4</b> Estimates</td><td>\\(\\text{mean}=' + meanTex + '=' + fmt(mean, 4) + '\\), \\(\\;' + modeTex + '\\), \\(\\;\\text{var}=' + fmt(vr, 4) + '\\)</td></tr>' +
+    '<tr><td><b>5</b> Predictive</td><td>\\(' + predTex + '=' + fmt(pred, 4) + '\\)</td></tr>' +
+    '</table></div>';
+  typeset(out);
+
+  // plot
+  var el = $('#pmPlot'), priorF, postF, xMax, marks = [{x: mle, t: 'MLE ' + fmt(mle, 3)}];
+  if (fam === 'B'){
+    priorF = function(x){ return betaPdf(x, a, b); }; postF = function(x){ return betaPdf(x, al, be); }; xMax = 1;
+  } else {
+    priorF = function(x){ return gammaPdf(x, a, b); }; postF = function(x){ return gammaPdf(x, al, be); };
+    xMax = Math.max(mean + 4.5 * Math.sqrt(vr), mle * 1.25, 0.5);
+    var tk0 = niceTicks(xMax); xMax = tk0[tk0.length - 1] < xMax ? tk0[tk0.length - 1] + (tk0[1] - tk0[0]) : tk0[tk0.length - 1];
+  }
+  var pm = 0, pr = 0;
+  for (var i = 1; i < 400; i++){
+    var x = xMax * i / 400, v1 = postF(x), v2 = priorF(x);
+    if (isFinite(v1)) pm = Math.max(pm, v1);
+    if (isFinite(v2)) pr = Math.max(pr, v2);
+  }
+  var yMax = 1.12 * Math.max(pm, Math.min(pr, 3 * pm));
+  plot(el, {xMin:0, xMax:xMax, yMax:yMax, h:200, xTicks: fam === 'B' ? [0,0.25,0.5,0.75,1] : niceTicks(xMax), marks:marks, label:'Prior and posterior density',
+    series:[{f:priorF, cls:'s-prior'}, {f:postF, cls:'s-post', area:'a-post'}]});
+}
+pmModel.addEventListener('change', function(){ pmLoadDefaults(); pmRun(); });
+[pmA, pmB, pmN, pmData].forEach(function(inp){ inp.addEventListener('input', pmRun); });
+
+/* ---------- QDA calculator ---------- */
+var QP = {
+  f26: {m:[[2,0],[0,2],[0,0]], s:[[2,0,1],[1,0,2],[3,2,2]], p:['1/3','1/3','1/3'], x:[1,0]},
+  f25: {m:[[3,0],[0,3],[0,0]], s:[[1,0,1],[1,0,1],[2,1,1]], p:['1/3','1/3','1/3'], x:[1,1]},
+  r25: {m:[[1,0],[0,1],[0,0]], s:[[1,0,1],[1,0,1],[5,3,2]], p:['1/4','1/4','1/2'], x:[1,1]},
+  mock: {m:[[1,1],[-1,0],[0,2]], s:[[1,0,1],[2,0,0.5],[2,1,1]], p:['0.2','0.2','0.6'], x:[0,1]}
+};
+var qc = $('#qdaClasses'), qh = '';
+for (var c = 1; c <= 3; c++){
+  qh += '<div class="cls"><b>Class ' + c + '</b>' +
+    '<div class="cap">mean μ</div><div class="row two">' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'm1" aria-label="Class ' + c + ' mean, first coordinate">' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'm2" aria-label="Class ' + c + ' mean, second coordinate"></div>' +
+    '<div class="cap">covariance Σ: a (top-left), b (off-diagonal), d (bottom-right)</div><div class="row">' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'a" aria-label="Class ' + c + ' covariance a">' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'b" aria-label="Class ' + c + ' covariance b">' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'd" aria-label="Class ' + c + ' covariance d"></div>' +
+    '<div class="cap">prior π (fractions like 1/3 work)</div>' +
+    '<input type="text" inputmode="decimal" id="q' + c + 'p" aria-label="Class ' + c + ' prior"></div>';
+}
+qc.innerHTML = qh;
+function pnum(v){
+  v = String(v).trim().replace('−', '-');
+  if (v.indexOf('/') > -1){ var p = v.split('/'); return parseFloat(p[0]) / parseFloat(p[1]); }
+  return v === '' ? NaN : Number(v);
+}
+function qLoad(key){
+  var P = QP[key];
+  for (var c = 1; c <= 3; c++){
+    $('#q' + c + 'm1').value = P.m[c-1][0]; $('#q' + c + 'm2').value = P.m[c-1][1];
+    $('#q' + c + 'a').value = P.s[c-1][0]; $('#q' + c + 'b').value = P.s[c-1][1]; $('#q' + c + 'd').value = P.s[c-1][2];
+    $('#q' + c + 'p').value = P.p[c-1];
+  }
+  $('#qx1').value = P.x[0]; $('#qx2').value = P.x[1];
+  $$('#qdaPresets .chip').forEach(function(ch){ ch.classList.toggle('on', ch.dataset.p === key); });
+  qRun();
+}
+function qRun(){
+  var out = $('#qdaOut'), x1 = pnum($('#qx1').value), x2 = pnum($('#qx2').value), R = [], msg = '';
+  if (!isFinite(x1) || !isFinite(x2)) msg = 'Type the point x as two numbers.';
+  for (var c = 1; c <= 3 && !msg; c++){
+    var m1 = pnum($('#q' + c + 'm1').value), m2 = pnum($('#q' + c + 'm2').value);
+    var a = pnum($('#q' + c + 'a').value), b = pnum($('#q' + c + 'b').value), d = pnum($('#q' + c + 'd').value), p = pnum($('#q' + c + 'p').value);
+    if ([m1,m2,a,b,d,p].some(function(v){ return !isFinite(v); })){ msg = 'Class ' + c + ': fill in every box with a number.'; break; }
+    var det = a * d - b * b;
+    if (!(a > 0) || !(det > 0)){ msg = 'Class ' + c + ': Σ must be positive definite, so a > 0 and ad − b² > 0.'; break; }
+    if (!(p > 0)){ msg = 'Class ' + c + ': the prior must be above 0.'; break; }
+    var ia = d / det, ib = -b / det, id = a / det, v1 = x1 - m1, v2 = x2 - m2;
+    var d2 = ia * v1 * v1 + 2 * ib * v1 * v2 + id * v2 * v2;
+    var g = Math.log(p) - 0.5 * Math.log(det) - 0.5 * d2;
+    R.push({c:c, v1:v1, v2:v2, det:det, ia:ia, ib:ib, id:id, d2:d2, p:p, g:g});
+  }
+  if (msg){ out.innerHTML = '<p class="err">' + msg + '</p>'; return; }
+  var mx = Math.max.apply(null, R.map(function(r){ return r.g; }));
+  var Z = R.reduce(function(s, r){ return s + Math.exp(r.g - mx); }, 0);
+  var win = R.filter(function(r){ return r.g === mx; })[0];
+  var same = function(k){ return R.every(function(r){ return Math.abs(r[k] - R[0][k]) < 1e-9; }); };
+  var note = '';
+  if (same('det') && same('p') && same('d2')) note = 'Everything is equal: it is a tie.';
+  else if (same('det') && same('d2')) note = 'Distances and determinants are equal, so the prior decides.';
+  else if (same('det') && same('p')) note = 'Determinants and priors are equal, so the smallest \\(d^2\\) decides.';
+  var h = '<div class="tw" style="margin-top:0"><table class="t"><tr><th>Class</th><th>\\(x-\\mu_c\\)</th><th class="num">\\(|\\Sigma_c|\\)</th><th>\\(\\Sigma_c^{-1}\\)</th><th class="num">\\(d_c^2\\)</th><th class="num">\\(g_c\\)</th><th class="num">\\(P(c\\mid x)\\)</th></tr>';
+  R.forEach(function(r){
+    h += '<tr' + (r === win ? ' class="win"' : '') + '><td>' + r.c + '</td>' +
+      '<td>\\((' + frac(r.v1) + ',\\ ' + frac(r.v2) + ')\\)</td>' +
+      '<td class="num">\\(' + frac(r.det) + '\\)</td>' +
+      '<td>\\(\\begin{pmatrix}' + frac(r.ia) + ' & ' + frac(r.ib) + '\\\\ ' + frac(r.ib) + ' & ' + frac(r.id) + '\\end{pmatrix}\\)</td>' +
+      '<td class="num">\\(' + frac(r.d2) + '\\)</td>' +
+      '<td class="num">' + fmt(r.g, 3).replace('-', '−') + '</td>' +
+      '<td class="num">' + fmt(Math.exp(r.g - mx) / Z, 3) + '</td></tr>';
+  });
+  h += '</table></div><p class="res" style="margin:0"><b>Class ' + win.c + ' wins.</b> ' + note + ' <span class="muted small">\\(g_c=\\log\\pi_c-\\tfrac12\\log|\\Sigma_c|-\\tfrac12d_c^2\\), natural log.</span></p>';
+  out.innerHTML = h;
+  typeset(out);
+}
+$$('#qdaPresets .chip').forEach(function(ch){ ch.addEventListener('click', function(){ qLoad(ch.dataset.p); }); });
+qc.addEventListener('input', qRun);
+$('#qx1').addEventListener('input', qRun); $('#qx2').addEventListener('input', qRun);
+
+/* ---------- true / false trainer ---------- */
+var TF = [
+  ['There exist random variables that are uncorrelated but dependent.', true, 'X uniform on [−1, 1], Y = X². Cov(X, Y) = E[X³] − E[X]E[X²] = 0, but Y is a function of X.'],
+  ['If X and Y are independent, they are uncorrelated.', true, 'E[XY] = E[X]E[Y], so the covariance is 0.'],
+  ['Jointly Gaussian and uncorrelated variables are independent.', true, 'For Gaussians, a zero covariance makes the joint density factorise.'],
+  ['The posterior is uniquely determined by θ_MLE and θ_MAP.', false, 'Two numbers cannot fix a whole curve. 5 heads in 10 flips and 50 in 100 (prior Beta(1,1)) give the same MLE and MAP (0.5), but Beta(6,6) and Beta(51,51) differ in width.'],
+  ['OLS predictions for 0/1 outcomes always stay in [0, 1].', false, 'A straight line takes any real value; for large |x| it leaves [0, 1]. Logistic regression uses the sigmoid to stay inside.'],
+  ['Bag-of-words is a good model to predict the next word.', false, 'It ignores word order. Use a Markov chain, which conditions on the last word.'],
+  ['Logistic regression has an explicit formula for the MLE weights.', false, 'The equation Xᵀ(sigm(Xw) − y) = 0 is non-linear in w. You must iterate: gradient descent, Newton, IRLS.'],
+  ['Logistic regression outputs always lie in (0, 1).', true, 'They pass through the sigmoid 1 / (1 + e^(−wᵀx)).'],
+  ['Linear regression can predict vector-valued outputs.', true, 'Ŵ = (XᵀX)⁻¹XᵀY: one regression per output column.'],
+  ['Linear regression can only model linear relations between x and y.', false, 'It is linear in w, not in x. Basis functions φ(x) = (1, x, x², sin x, …) model curves.'],
+  ['With large noise and outliers, the quadratic loss is the better choice.', false, 'Squares blow up large residuals, so outliers dominate. The absolute (Laplace) loss is more robust.'],
+  ['Standard linear regression minimises the absolute differences.', false, 'It minimises the sum of squares, which is the Gaussian MLE.'],
+  ['The MLE of the noise variance in linear regression is RSS / n.', true, 'Set d/dσ² of −(n/2)log σ² − RSS/(2σ²) to zero.'],
+  ['Ridge regression has a unique solution for every λ > 0.', true, 'XᵀX + λI is always invertible for λ > 0.'],
+  ['Lasso can set some weights exactly to zero.', true, 'The L1 penalty has corners on the axes, so the optimum often lands on one.'],
+  ['A twice-differentiable f is convex if f″ is always negative.', false, 'Convex means f″ ≥ 0 (curving up). f″ < 0 is concave.'],
+  ['Newton’s method is convenient because it needs no second derivatives.', false, 'Newton uses the Hessian (second derivatives). Gradient descent needs only the gradient.'],
+  ['Estimating a Markov transition matrix by MLE works fine on small data.', false, 'Unseen transitions get probability 0 forever. Add a Dirichlet prior (add-one smoothing).'],
+  ['The initial distribution and transition matrix give the full distribution of a Markov chain.', true, 'p(x₀,…,x_T) = π(x₀) · Π A(x_t, x_{t+1}).'],
+  ['Noise-free Gaussian interpolation from the lecture gives straight lines between data points.', false, 'The second-difference prior picks the curve with the least curvature: a smooth curve through the points.'],
+  ['LDA gives linear decision boundaries.', true, 'With a shared Σ the quadratic term xᵀΣ⁻¹x and log|Σ| cancel between classes.'],
+  ['QDA assumes all classes share the same covariance.', false, 'That is LDA. QDA gives each class its own Σ_c.'],
+  ['Gaussian Naive Bayes is QDA with diagonal covariance matrices.', true, 'Independent features given the class means a diagonal Σ_c.'],
+  ['In Naive Bayes, one feature influences another within a class.', false, 'Features are conditionally independent given the class.'],
+  ['The Bayesian approach is particularly strong for small datasets.', true, 'The prior acts as pseudo-counts: no 0/1 estimates, and uncertainty is shown. Example: 3 heads in 3 flips.'],
+  ['With an extremely flat prior, the posterior equals the prior.', false, 'The opposite: a flat prior carries no information, so the data dominates.'],
+  ['With an extremely flat prior, the posterior variance is infinite.', false, 'It is finite as soon as there is data, and shrinks as n grows.'],
+  ['For huge n, the posterior mean is close to the MLE.', true, 'The prior parameters become negligible next to n and the data sum.'],
+  ['Gamma is conjugate to both the Poisson and the Exponential.', true, 'Both likelihoods have the shape λ^(…) e^(−(…)λ).'],
+  ['Beta is conjugate to the Bernoulli, Binomial, Geometric and Negative binomial.', true, 'All their likelihoods have the shape θ^(…) (1 − θ)^(…).'],
+  ['Non-conjugate priors cannot be used.', false, 'They can; the posterior just has no closed form and is computed numerically.'],
+  ['With a uniform prior, MAP = MLE.', true, 'A constant prior does not move the maximum.'],
+  ['The posterior mean always equals the MAP.', false, 'Mean ≠ mode in general. Beta(2, 5): mean 2/7, mode 1/5.'],
+  ['A very narrow prior lets the data dominate for small n.', false, 'A narrow prior is a strong belief; it takes a lot of data to move it.'],
+  ['Uniform(0, θ) belongs to the exponential family.', false, 'Its support [0, θ] depends on θ.'],
+  ['The Poisson belongs to the exponential family.', true, 'e^(−λ)λˣ/x! = (1/x!) exp(x log λ − λ).'],
+  ['The geometric distribution is memoryless.', true, 'P(X ≥ n + m | X ≥ n) = (1 − p)^m, independent of n.'],
+  ['Mutual information I(X;Y) = 0 exactly when X and Y are independent.', true, 'I = KL(p(x,y) ‖ p(x)p(y)), which is 0 only if p(x,y) = p(x)p(y).'],
+  ['MAP always picks the hypothesis with the highest likelihood.', false, 'MAP maximises prior × likelihood. The two dice: a prior of 10⁻⁶ beats a likelihood factor of 4.'],
+  ['In the Poisson–Gamma model the rate parameter grows by the sum of the goals.', false, 'Shape grows by S (goals), rate grows by n (matches): Gamma(a + S, b + n).']
+];
+var tfOrder = TF.map(function(_, i){ return i; }), tfAns = {};
+function tfRender(){
+  var L = $('#tfList'), h = '';
+  tfOrder.forEach(function(i, k){
+    var r = tfAns[i], cls = r == null ? '' : (r === TF[i][1] ? ' right' : ' wrong');
+    h += '<div class="tf' + cls + '" data-i="' + i + '"><div class="st">' + (k + 1) + '. ' + TF[i][0] + '</div>' +
+      '<div class="btns"><button type="button" data-v="1"' + (r === true ? ' class="pick"' : '') + '>True</button><button type="button" data-v="0"' + (r === false ? ' class="pick"' : '') + '>False</button></div>' +
+      (r == null ? '' : '<div class="why"><b class="v">' + (TF[i][1] ? 'True' : 'False') + (r === TF[i][1] ? ', correct.' : ', not quite.') + '</b> ' + TF[i][2] + '</div>') + '</div>';
+  });
+  L.innerHTML = h;
+  var answered = Object.keys(tfAns).length, right = Object.keys(tfAns).filter(function(i){ return tfAns[i] === TF[i][1]; }).length;
+  $('#tfScore').innerHTML = right + ' <small>right of ' + answered + ' answered · ' + TF.length + ' statements</small>';
+}
+$('#tfList').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-v]'); if (!b) return;
+  var i = +b.closest('.tf').dataset.i;
+  tfAns[i] = b.dataset.v === '1';
+  tfRender();
+});
+$('#tfShuffle').addEventListener('click', function(){
+  for (var i = tfOrder.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var tmp = tfOrder[i]; tfOrder[i] = tfOrder[j]; tfOrder[j] = tmp; }
+  tfAns = {}; tfRender();
+});
+$('#tfReset').addEventListener('click', function(){ tfAns = {}; tfRender(); });
+
+/* ---------- boot ---------- */
+tfRender();
+pmRun();
+qLoad('f26');
+staticPlots();
+markov();
+var rt;
+window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ staticPlots(); pmRun(); fitMath(document); }, 150); });
+})();
+</script>
+</body>
+</html>
